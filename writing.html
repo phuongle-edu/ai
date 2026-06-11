@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Sentence Rescue Lab | Writing Center Interactive Workshop</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .heading-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
+
+    <!-- Top Navigation / Banner -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 px-4 py-3 sm:py-4">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-lg shadow-indigo-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="heading-font text-lg sm:text-xl font-bold text-slate-900 tracking-tight">The Sentence Rescue Lab</h1>
+                    <p class="text-xs text-slate-500 font-medium">Community College Writing Center • Freshman Prep</p>
+                </div>
+            </div>
+            <!-- Progress Tracker -->
+            <div class="flex items-center gap-4 w-full sm:w-auto justify-end">
+                <div class="text-right hidden md:block">
+                    <span class="text-xs text-slate-400 block font-semibold uppercase tracking-wider">Your Progress</span>
+                    <span id="progress-text" class="text-sm font-bold text-indigo-600">Getting Started</span>
+                </div>
+                <div class="w-24 sm:w-32 bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
+                    <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-violet-600 h-full w-0 transition-all duration-500 ease-out"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
+        
+        <!-- WELCOME SCREEN -->
+        <section id="screen-welcome" class="space-y-8 py-4 sm:py-8">
+            <div class="bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-12 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-16 -bottom-16 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl"></div>
+                <div class="absolute -left-16 -top-16 w-64 h-64 bg-violet-500/10 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10 max-w-2xl space-y-6">
+                    <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-block">
+                        Welcome to College Writing!
+                    </span>
+                    <h2 class="heading-font text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                        Master the structural "Big Three" without the boring jargon.
+                    </h2>
+                    <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                        Hey there! I'm your Writing Center guide. In college, professors care a lot about <strong class="text-white">sentence structure</strong>. If you don't know what a "comma splice" or a "fragment" is yet, <strong class="text-indigo-300">perfect!</strong> You are in the exact right place. This interactive guide will teach you everything from scratch.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <button onclick="startDiagnostic()" class="bg-white text-indigo-950 hover:bg-slate-100 transition px-8 py-4 rounded-xl font-bold shadow-lg shadow-white/5 flex items-center justify-center gap-2 group text-base">
+                            Let's Jump In!
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:translate-x-1 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white border border-slate-200/80 p-6 rounded-2xl shadow-sm">
+                    <div class="text-red-500 bg-red-50 w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-2xl">👻</div>
+                    <h3 class="font-bold text-lg text-slate-900 heading-font mb-2">1. The Fragment</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">Like a ghost, it lacks a complete body (it is missing a subject, a action/verb, or just leaves you hanging!).</p>
+                </div>
+                <div class="bg-white border border-slate-200/80 p-6 rounded-2xl shadow-sm">
+                    <div class="text-amber-500 bg-amber-50 w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-2xl">⚡</div>
+                    <h3 class="font-bold text-lg text-slate-900 heading-font mb-2">2. The Run-On</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">Two heavy sentences smashing together at full speed without any signal signs or punctuation to split them up.</p>
+                </div>
+                <div class="bg-white border border-slate-200/80 p-6 rounded-2xl shadow-sm">
+                    <div class="text-blue-500 bg-blue-50 w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-2xl">🩹</div>
+                    <h3 class="font-bold text-lg text-slate-900 heading-font mb-2">3. The Comma Splice</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">Trying to patch up two fully independent, massive sentences with nothing but a weak, fragile little comma.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- DIAGNOSTIC STAGE (VIBE CHECK) -->
+        <section id="screen-diagnostic" class="hidden space-y-6">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm max-w-3xl mx-auto">
+                <div class="flex items-center justify-between mb-8">
+                    <span class="bg-violet-100 text-violet-700 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">Stage 1: The Vibe Check</span>
+                    <span id="diag-counter" class="text-sm font-bold text-slate-500">Question 1 of 3</span>
+                </div>
+                
+                <h3 class="heading-font text-2xl font-bold text-slate-900 mb-2">Let's check your intuition first!</h3>
+                <p class="text-slate-500 text-sm mb-6">Read the sentence below. How does it "feel" to your natural reading voice? No grammar terms required!</p>
+
+                <!-- Sentence Display Box -->
+                <div class="bg-slate-50 border-2 border-slate-200/60 rounded-2xl p-6 sm:p-8 text-center my-6 relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
+                    <p id="diag-sentence" class="text-lg sm:text-xl font-medium text-slate-800 leading-relaxed italic"></p>
+                </div>
+
+                <!-- Answer Options -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="diag-options-container">
+                    <button onclick="submitDiagnostic('good')" class="group text-left border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/20 p-4 rounded-xl transition duration-200">
+                        <span class="block text-2xl mb-1">🟢</span>
+                        <span class="block font-bold text-slate-900 heading-font">Feels great!</span>
+                        <span class="block text-xs text-slate-500">Clear, ready to stand on its own.</span>
+                    </button>
+                    <button onclick="submitDiagnostic('incomplete')" class="group text-left border border-slate-200 hover:border-red-400 hover:bg-red-50/20 p-4 rounded-xl transition duration-200">
+                        <span class="block text-2xl mb-1">🧐</span>
+                        <span class="block font-bold text-slate-900 heading-font">Incomplete...</span>
+                        <span class="block text-xs text-slate-500">Leaves me waiting for more info.</span>
+                    </button>
+                    <button onclick="submitDiagnostic('rushed')" class="group text-left border border-slate-200 hover:border-amber-400 hover:bg-amber-50/20 p-4 rounded-xl transition duration-200">
+                        <span class="block text-2xl mb-1">🏃‍♂️</span>
+                        <span class="block font-bold text-slate-900 heading-font">Too fast / crowded</span>
+                        <span class="block text-xs text-slate-500">Feels rushed or squished together.</span>
+                    </button>
+                </div>
+
+                <!-- Diagnostic Explainer (Hidden Initially) -->
+                <div id="diag-feedback" class="hidden mt-6 p-5 rounded-2xl border transition-all duration-300">
+                    <div class="flex gap-4 items-start">
+                        <div id="diag-feedback-icon" class="text-3xl"></div>
+                        <div>
+                            <h4 id="diag-feedback-title" class="font-extrabold text-base mb-1 heading-font"></h4>
+                            <p id="diag-feedback-desc" class="text-sm text-slate-600 leading-relaxed"></p>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button id="diag-next-btn" onclick="nextDiagnostic()" class="bg-slate-900 text-white hover:bg-slate-800 px-6 py-2.5 rounded-lg text-sm font-bold flex items-center gap-1.5 transition">
+                            Next Challenge
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONCEPT LAB (THE WORKSHOP DEPOT) -->
+        <section id="screen-lab" class="hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-4">
+                <span class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-3">Stage 2: The Core Laboratory</span>
+                <h2 class="heading-font text-3xl font-extrabold text-slate-900">Demystifying Sentence Anatomy</h2>
+                <p class="text-slate-500 text-sm">Every sentence in academic writing relies on having at least one solid, robust building block called an <strong class="text-indigo-600">Independent Clause</strong>. Let's see what breaks them.</p>
+            </div>
+
+            <!-- Interactive Concept Selector -->
+            <div class="grid grid-cols-3 gap-2 sm:gap-4 max-w-xl mx-auto">
+                <button onclick="switchLabTab('fragment')" id="tab-btn-fragment" class="py-3 px-4 rounded-xl font-bold text-sm heading-font transition flex flex-col sm:flex-row items-center justify-center gap-2 border-2">
+                    <span>👻</span> Fragments
+                </button>
+                <button onclick="switchLabTab('runon')" id="tab-btn-runon" class="py-3 px-4 rounded-xl font-bold text-sm heading-font transition flex flex-col sm:flex-row items-center justify-center gap-2 border-2">
+                    <span>⚡</span> Run-ons
+                </button>
+                <button onclick="switchLabTab('splice')" id="tab-btn-splice" class="py-3 px-4 rounded-xl font-bold text-sm heading-font transition flex flex-col sm:flex-row items-center justify-center gap-2 border-2">
+                    <span>🩹</span> Splices
+                </button>
+            </div>
+
+            <!-- Lab Slide Container -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-10 shadow-sm max-w-3xl mx-auto min-h-[400px] flex flex-col justify-between">
+                <!-- Fragment Slide Content -->
+                <div id="slide-fragment" class="lab-slide space-y-6">
+                    <div class="flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="bg-red-50 text-red-500 p-4 rounded-2xl text-4xl self-start">👻</div>
+                        <div class="space-y-2">
+                            <h3 class="heading-font text-2xl font-bold text-slate-900">The Fragment: The Ghost of a Sentence</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">A fragment is an incomplete sentence masquerading as a whole one. It might look like a sentence because it starts with a capital letter and ends with a period, but it's missing vital organs! It either lacks a <strong class="text-indigo-600">Subject (who did it)</strong>, a <strong class="text-indigo-600">Verb (what happened)</strong>, or it starts with a connector word (like *because*, *although*) that leaves the thought hanging in limbo.</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Slider/Trigger Example -->
+                    <div class="border border-red-100 bg-red-50/20 rounded-2xl p-6 space-y-4">
+                        <span class="text-xs font-bold tracking-wider text-red-600 uppercase block">Anatomy of a Ghost Sentence</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl border border-red-200/50">
+                                <p class="text-xs font-bold text-slate-400 mb-1">❌ Broke Fragment</p>
+                                <p class="text-base text-red-700 italic">"Because the campus parking lot was completely full."</p>
+                                <span class="text-xs text-red-500 block mt-2">Why? Starts with 'Because' but never finishes the thought. What happened next?</span>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-emerald-200/50">
+                                <p class="text-xs font-bold text-slate-400 mb-1">✨ Healthy Fix</p>
+                                <p class="text-base text-emerald-800 italic">"Because the campus parking lot was completely full, I was late to my morning lab."</p>
+                                <span class="text-xs text-emerald-600 block mt-2">Perfect! Added a complete thought that can stand alone.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Runon Slide Content -->
+                <div id="slide-runon" class="lab-slide hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="bg-amber-50 text-amber-500 p-4 rounded-2xl text-4xl self-start">⚡</div>
+                        <div class="space-y-2">
+                            <h3 class="heading-font text-2xl font-bold text-slate-900">The Run-On: The Unstoppable Train</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">A run-on happens when two independent sentences are squished together with absolutely no punctuation or helper words to tell the reader's brain where one stops and the next begins. It creates instant mental fatigue!</p>
+                        </div>
+                    </div>
+
+                    <div class="border border-amber-100 bg-amber-50/20 rounded-2xl p-6 space-y-4">
+                        <span class="text-xs font-bold tracking-wider text-amber-700 uppercase block">Anatomy of a Fused Collision</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl border border-amber-200/50">
+                                <p class="text-xs font-bold text-slate-400 mb-1">❌ Fused Run-on</p>
+                                <p class="text-base text-amber-800 italic">"My English draft is due at noon I haven't even started writing."</p>
+                                <span class="text-xs text-amber-600 block mt-2">Why? Two distinct claims ("My draft is due", "I haven't started") crashing into each other.</span>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-emerald-200/50">
+                                <p class="text-xs font-bold text-slate-400 mb-1">✨ Healthy Fixes</p>
+                                <p class="text-base text-emerald-800 italic">"My English draft is due at noon. I haven't even started writing." <strong class="text-xs text-emerald-600">(Use a period!)</strong></p>
+                                <p class="text-base text-emerald-800 italic mt-2">"My English draft is due at noon; I haven't even started." <strong class="text-xs text-emerald-600">(Use a semicolon!)</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comma Splice Slide Content -->
+                <div id="slide-splice" class="lab-slide hidden space-y-6">
+                    <div class="flex flex-col sm:flex-row gap-6 items-start">
+                        <div class="bg-blue-50 text-blue-500 p-4 rounded-2xl text-4xl self-start">🩹</div>
+                        <div class="space-y-2">
+                            <h3 class="heading-font text-2xl font-bold text-slate-900">The Comma Splice: Weak Punctuation Glue</h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">Comma splices occur when you join two complete sentences with just a comma. Commas are like lightweight plastic tape—they are not strong enough to join two heavy independent clauses together by themselves! To use a comma, you MUST add a coordinator partner (known as the <strong class="text-indigo-600">FANBOYS</strong>: *for, and, nor, but, or, yet, so*).</p>
+                        </div>
+                    </div>
+
+                    <div class="border border-blue-100 bg-blue-50/20 rounded-2xl p-6 space-y-4">
+                        <span class="text-xs font-bold tracking-wider text-blue-700 uppercase block">Anatomy of a Splice Repair</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl border border-blue-200/50">
+                                <p class="text-xs font-bold text-slate-400 mb-1">❌ Splice Tape</p>
+                                <p class="text-base text-blue-800 italic">"I studied all night, I still felt nervous for the exam."</p>
+                                <span class="text-xs text-blue-500 block mt-2">Why? A comma alone cannot merge these two complete thoughts.</span>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-emerald-200/50">
+                                <p class="text-xs font-bold text-slate-400 mb-1">✨ Stronger Fixes</p>
+                                <p class="text-base text-emerald-800 italic">"I studied all night, <span class="font-extrabold text-indigo-600">but</span> I still felt nervous." <strong class="text-xs text-emerald-600">(Add FANBOYS!)</strong></p>
+                                <p class="text-base text-emerald-800 italic mt-2">"I studied all night; <span class="font-extrabold text-indigo-600">however</span>, I still felt nervous." <strong class="text-xs text-emerald-600">(Semicolon + transition!)</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lab Next Action -->
+                <div class="mt-8 pt-6 border-t border-slate-100 flex justify-between items-center">
+                    <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Concept Phase Ready</span>
+                    <button onclick="startRepairShop()" class="bg-indigo-600 text-white hover:bg-indigo-700 px-8 py-3 rounded-xl font-bold text-sm shadow-lg shadow-indigo-100 transition flex items-center gap-1.5">
+                        Enter Sentence Repair Shop
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SENTENCE REPAIR SHOP -->
+        <section id="screen-repair" class="hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-4">
+                <span class="bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-block mb-3 font-semibold">Stage 3: The Hands-On Repair Shop</span>
+                <h2 class="heading-font text-3xl font-extrabold text-slate-900">Get Your Hands Dirty</h2>
+                <p class="text-slate-500 text-sm">Now, let's repair some real community college student writings. Choose the correct structural fix below to patch them up!</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto">
+                <!-- Sandbox Controls -->
+                <div class="lg:col-span-8 bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs text-indigo-600 font-extrabold tracking-widest uppercase">Job Card</span>
+                        <span id="repair-score" class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">Correct: 0 / 3</span>
+                    </div>
+
+                    <!-- Defective Sentence display -->
+                    <div class="bg-slate-900 text-slate-100 rounded-2xl p-6 relative overflow-hidden font-mono text-sm sm:text-base">
+                        <div class="absolute top-2 left-2 flex gap-1.5">
+                            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                        </div>
+                        <div class="mt-4 border-t border-slate-800 pt-4 text-slate-400">
+                            // FIX THIS PROBLEM:
+                        </div>
+                        <p id="repair-sentence" class="mt-2 text-white font-semibold leading-relaxed tracking-wide"></p>
+                    </div>
+
+                    <!-- Interactive Options -->
+                    <div class="space-y-3" id="repair-options">
+                        <!-- Dynamic generated buttons go here -->
+                    </div>
+
+                    <!-- Instant Interactive Feedback -->
+                    <div id="repair-feedback" class="hidden p-5 rounded-2xl border transition-all duration-300">
+                        <p id="repair-feedback-text" class="text-sm leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <!-- Blueprint Sidebar -->
+                <div class="lg:col-span-4 bg-slate-900 text-white rounded-3xl p-6 shadow-sm flex flex-col justify-between border border-slate-800">
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-emerald-400 text-xl">🔧</span>
+                            <h3 class="heading-font font-bold text-lg">Punctuation Blueprint</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed">Here are your legal moves to connect two sentences under college rules:</p>
+                        
+                        <div class="space-y-3 pt-2">
+                            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50">
+                                <span class="font-mono text-emerald-400 text-xs font-bold uppercase block mb-1">Move 1: The Splice Stopper</span>
+                                <p class="text-xs text-slate-300">Insert a period, capitalize the next word. Easy, foolproof, keeps things safe.</p>
+                            </div>
+                            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50">
+                                <span class="font-mono text-emerald-400 text-xs font-bold uppercase block mb-1">Move 2: Semicolon Power</span>
+                                <p class="text-xs text-slate-300">Use a semicolon ( ; ) to join closely related complete sentences. No capitals needed!</p>
+                            </div>
+                            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50">
+                                <span class="font-mono text-emerald-400 text-xs font-bold uppercase block mb-1">Move 3: FANBOYS Merge</span>
+                                <p class="text-xs text-slate-300">Use a comma + FANBOYS (like <em class="font-semibold text-white">but</em>, <em class="font-semibold text-white">so</em>, <em class="font-semibold text-white">and</em>) to merge perfectly.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Trigger Continue to game -->
+                    <button id="repair-continue" onclick="nextRepairChallenge()" class="hidden w-full mt-6 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold text-sm tracking-wide transition flex items-center justify-center gap-1.5">
+                        Next Vehicle Fix
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BOSS CHOSEN / FINAL ESCAPE ROOM -->
+        <section id="screen-boss" class="hidden space-y-6">
+            <div class="bg-gradient-to-br from-indigo-950 via-slate-900 to-rose-950 text-white rounded-3xl p-6 sm:p-10 shadow-2xl relative overflow-hidden max-w-4xl mx-auto">
+                <div class="absolute -right-32 -top-32 w-80 h-80 bg-rose-500/10 rounded-full blur-3xl"></div>
+                
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="md:col-span-8 space-y-6">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-rose-500/20 text-rose-300 border border-rose-500/30 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider inline-block">
+                                Final Boss Battle
+                            </span>
+                            <span class="text-xs text-slate-400">Score at least 2/3 to win</span>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h2 class="heading-font text-3xl sm:text-4xl font-extrabold tracking-tight">Save Professor Ramirez's Paper!</h2>
+                            <p class="text-sm text-slate-300 leading-relaxed">
+                                A sneaky "Grammar Goblin" has contaminated a student's final paper with critical structural errors right before submission. The student has only moments left! Diagnose and patch the sentences to earn your Writing Center Certificate of Mastery.
+                            </p>
+                        </div>
+
+                        <!-- Mini RPG Console -->
+                        <div class="bg-slate-900/90 rounded-2xl border border-slate-800 p-5 font-mono text-sm space-y-4">
+                            <div class="flex justify-between items-center text-xs text-slate-500 pb-2 border-b border-slate-800">
+                                <span>TERMINAL ENGINE</span>
+                                <span id="boss-life" class="text-rose-400 font-bold">❤️ HEALTH: 3/3</span>
+                            </div>
+
+                            <p id="boss-sentence" class="text-yellow-400 font-semibold text-base leading-relaxed italic"></p>
+                            
+                            <!-- Options list -->
+                            <div class="space-y-2 pt-2" id="boss-choices-container">
+                                <!-- Choices added dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Feedback Panel -->
+                        <div id="boss-feedback" class="hidden p-4 rounded-xl border border-slate-800 text-xs font-semibold"></div>
+                    </div>
+
+                    <!-- RPG Visual Panel -->
+                    <div class="md:col-span-4 bg-slate-950/60 p-6 rounded-2xl border border-slate-800/80 flex flex-col justify-between h-full min-h-[250px] text-center">
+                        <div class="space-y-4">
+                            <div class="text-6xl my-4">👾</div>
+                            <h4 class="heading-font font-bold text-lg text-rose-400">Grammar Overlord</h4>
+                            <p class="text-xs text-slate-400">"Your commas cannot stop me, freshman!"</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-800">
+                            <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden mb-1">
+                                <div id="boss-enemy-health" class="bg-rose-500 h-full w-full transition-all duration-300"></div>
+                            </div>
+                            <span class="text-[10px] text-slate-500 font-semibold tracking-wider block uppercase">Boss Guard Health</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CERTIFICATE / COMPLETION SCREEN -->
+        <section id="screen-certificate" class="hidden py-8">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-12 shadow-xl max-w-2xl mx-auto text-center space-y-8 relative overflow-hidden">
+                <div class="absolute inset-0 bg-[radial-gradient(#e0e7ff_1px,transparent_1px)] [background-size:16px_16px] opacity-30"></div>
+                
+                <div class="relative z-10 space-y-6">
+                    <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-4xl shadow-md">
+                        🎓
+                    </div>
+                    <div class="space-y-2">
+                        <h2 class="heading-font text-3xl sm:text-4xl font-extrabold text-slate-900">Mechanics Wizard Unlocked!</h2>
+                        <p class="text-sm text-slate-500 max-w-md mx-auto">You've successfully completed the Writing Center Sentence-Level workshop and conquered the Big Three errors!</p>
+                    </div>
+
+                    <!-- The Certificate Display -->
+                    <div class="border-4 border-double border-slate-200 bg-slate-50 p-6 sm:p-8 rounded-2xl max-w-md mx-auto relative">
+                        <span class="text-xs uppercase font-extrabold text-indigo-600 tracking-widest block mb-4">Official Verification</span>
+                        <h3 class="heading-font text-xl font-bold text-slate-800 mb-1">Sentence Rescue Certificate</h3>
+                        <p class="text-xs text-slate-400 italic">This certifies that you have demonstrated proficiency in diagnosing fragments, run-ons, and comma splices.</p>
+                        
+                        <div class="mt-6 flex justify-between items-center text-[10px] font-mono text-slate-400">
+                            <span>COMMUNITY COLLEGE WRITING CENTER</span>
+                            <span>STATUS: COMPLETED</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button onclick="restartWorkshop()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-8 rounded-xl text-sm transition">
+                            Practice Again
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 font-medium">
+        <p>© 2026 Community College Writing Center. Let's make writing less stressful, one complete thought at a time.</p>
+    </footer>
+
+    <!-- Web Audio API Synthesizer (for pure built-in sound effects) -->
+    <script>
+        // Custom sound synthesizer to prevent reliance on external mp3 files
+        const Sound = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            play(type) {
+                try {
+                    this.init();
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+
+                    if (type === 'success') {
+                        osc.frequency.setValueAtTime(523.25, this.ctx.currentTime); // C5
+                        osc.frequency.setValueAtTime(659.25, this.ctx.currentTime + 0.1); // E5
+                        gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+                        osc.start();
+                        osc.stop(this.ctx.currentTime + 0.3);
+                    } else if (type === 'fail') {
+                        osc.type = 'sawtooth';
+                        osc.frequency.setValueAtTime(220, this.ctx.currentTime); // A3
+                        osc.frequency.setValueAtTime(147, this.ctx.currentTime + 0.15); // D3
+                        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+                        gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+                        osc.start();
+                        osc.stop(this.ctx.currentTime + 0.4);
+                    } else if (type === 'victory') {
+                        const notes = [523.25, 587.33, 659.25, 783.99]; // C5, D5, E5, G5
+                        notes.forEach((freq, idx) => {
+                            const noteOsc = this.ctx.createOscillator();
+                            const noteGain = this.ctx.createGain();
+                            noteOsc.connect(noteGain);
+                            noteGain.connect(this.ctx.destination);
+                            noteOsc.frequency.setValueAtTime(freq, this.ctx.currentTime + (idx * 0.1));
+                            noteGain.gain.setValueAtTime(0.1, this.ctx.currentTime + (idx * 0.1));
+                            noteGain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + (idx * 0.1) + 0.3);
+                            noteOsc.start(this.ctx.currentTime + (idx * 0.1));
+                            noteOsc.stop(this.ctx.currentTime + (idx * 0.1) + 0.3);
+                        });
+                    }
+                } catch (e) {
+                    // Audio fallback if blocked/unsupported
+                }
+            }
+        };
+    </script>
+
+    <!-- Interactive Workshop Engine Script -->
+    <script>
+        // State Management
+        let appState = {
+            currentStage: 'welcome',
+            diagnostic: {
+                index: 0,
+                responses: []
+            },
+            repair: {
+                index: 0,
+                score: 0
+            },
+            boss: {
+                index: 0,
+                score: 0,
+                playerLife: 3,
+                enemyLife: 3
+            }
+        };
+
+        // Static Content Databases
+        const diagnosticQuestions = [
+            {
+                text: "Because the writing center is always packed with students needing help before midterms.",
+                options: {
+                    good: { correct: false, title: "Oh no, a ghost!", desc: "This is a fragment! Although it looks long, 'Because' leaves us waiting. What happens because of this packed house? We need a final consequence!" },
+                    incomplete: { correct: true, title: "Fantastic Intuition!", desc: "Yes, you noticed it leaves us hanging. This is a FRAGMENT. It is missing its main partner to complete the thought." },
+                    rushed: { correct: false, title: "Not quite rushed,", desc: "It actually feels too short in information! It starts with a connector word ('Because') but never finishes the thought. This is a Fragment." }
+                }
+            },
+            {
+                text: "The financial aid office lines were super long today, I decided to apply online instead.",
+                options: {
+                    good: { correct: false, title: "Wait a second...", desc: "This has a weak patch! This is a COMMA SPLICE. Two perfectly complete thoughts joined by nothing but a single comma." },
+                    incomplete: { correct: false, title: "Actually, it's very complete!", desc: "Both sides of the comma can stand perfectly alone as full sentences. That's why merging them with only a comma creates a Comma Splice." },
+                    rushed: { correct: true, title: "Bullseye! Rushed it.", desc: "Great catch! You noticed it felt squished. This is a COMMA SPLICE—trying to join two full thoughts using only a fragile comma." }
+                }
+            },
+            {
+                text: "I forgot my parking pass this morning I had to pay ten dollars to park in the visitor structure.",
+                options: {
+                    good: { correct: false, title: "Read that again out loud!", desc: "Did you take a breath? There is absolutely zero punctuation separating two completely independent statements. This is a fused RUN-ON." },
+                    incomplete: { correct: false, title: "It's super complete!", desc: "Both statements are fully functional, but they collide without a boundary marker. This is a Run-on sentence." },
+                    rushed: { correct: true, title: "Indeed! Out of Breath.", desc: "Perfect! You noticed how fast that was. Two independent clauses fused together with no punctuation is a FUSED RUN-ON." }
+                }
+            }
+        ];
+
+        const repairData = [
+            {
+                problem: "My biology lab group is amazing, we always finish the lab early.",
+                options: [
+                    { text: "My biology lab group is amazing we always finish early.", isCorrect: false, feedback: "Oops, you just removed the comma, turning a comma splice into a run-on!" },
+                    { text: "My biology lab group is amazing; we always finish the lab early.", isCorrect: true, feedback: "Awesome! The semicolon (;) is strong enough to connect these two complete clauses by itself." },
+                    { text: "My biology lab group is amazing, because we always finish early.", isCorrect: false, feedback: "This creates a logical puzzle. If you use 'because' here, you change the actual meaning!" }
+                ]
+            },
+            {
+                problem: "Although I took algebra in high school.",
+                options: [
+                    { text: "Although I took algebra in high school, I still struggled with the placement test.", isCorrect: true, feedback: "Excellent! You joined the dependent fragment to a complete, independent clause." },
+                    { text: "Although I took algebra in high school I still struggled.", isCorrect: false, feedback: "Close, but you need a comma to separate the introductory clause from the main clause!" },
+                    { text: "I took algebra in high school, although.", isCorrect: false, feedback: "Putting 'although' at the end doesn't solve the completeness problem. It still leaves us hanging!" }
+                ]
+            },
+            {
+                problem: "The cafeteria coffee is absolutely terrible it tastes like warm cardboard.",
+                options: [
+                    { text: "The cafeteria coffee is absolutely terrible, it tastes like warm cardboard.", isCorrect: false, feedback: "Watch out! That's a comma splice. A comma is too weak to hold these two strong sentences together." },
+                    { text: "The cafeteria coffee is absolutely terrible. It tastes like warm cardboard.", isCorrect: true, feedback: "Perfect! Splitting them into two clean, separate sentences is a simple and correct solution." },
+                    { text: "The cafeteria coffee is absolutely terrible it tastes, like warm cardboard.", isCorrect: false, feedback: "Adding a comma in the middle of the second clause doesn't help separate the two main sentences!" }
+                ]
+            }
+        ];
+
+        const bossData = [
+            {
+                text: "The library is an incredible place to study, it can get loud during finals week.",
+                choices: [
+                    { text: "The library is an incredible place to study; however, it can get loud during finals week.", isCorrect: true, damage: 1 },
+                    { text: "The library is an incredible place to study it can get loud during finals week.", isCorrect: false, damage: 0 },
+                    { text: "The library is an incredible place to study, although it can get loud during finals week.", isCorrect: true, damage: 1 } // both are grammatically fine, but let's encourage semicolon transitions
+                ]
+            },
+            {
+                text: "Since the tutoring center is free for all students.",
+                choices: [
+                    { text: "Since the tutoring center is free for all students, you should definitely book a session.", isCorrect: true, damage: 1 },
+                    { text: "The tutoring center is free for all students.", isCorrect: true, damage: 1 },
+                    { text: "Since the tutoring center is free for all students you should book.", isCorrect: false, damage: 0 }
+                ]
+            },
+            {
+                text: "My advisor suggested taking fifteen credits I think twelve is safer.",
+                choices: [
+                    { text: "My advisor suggested taking fifteen credits, I think twelve is safer.", isCorrect: false, damage: 0 },
+                    { text: "My advisor suggested taking fifteen credits, but I think twelve is safer.", isCorrect: true, damage: 1 },
+                    { text: "My advisor suggested taking fifteen credits; I think twelve is safer.", isCorrect: true, damage: 1 }
+                ]
+            }
+        ];
+
+        // State Transition Navigation
+        function updateProgress() {
+            const bar = document.getElementById('progress-bar');
+            const txt = document.getElementById('progress-text');
+            
+            switch(appState.currentStage) {
+                case 'welcome':
+                    bar.style.width = '10%';
+                    txt.innerText = 'Introduction';
+                    break;
+                case 'diagnostic':
+                    bar.style.width = '30%';
+                    txt.innerText = '1. Vibe Check';
+                    break;
+                case 'lab':
+                    bar.style.width = '55%';
+                    txt.innerText = '2. Core Concepts';
+                    break;
+                case 'repair':
+                    bar.style.width = '75%';
+                    txt.innerText = '3. Repair Shop';
+                    break;
+                case 'boss':
+                    bar.style.width = '90%';
+                    txt.innerText = '4. Final Arena';
+                    break;
+                case 'certificate':
+                    bar.style.width = '100%';
+                    txt.innerText = 'Completed!';
+                    break;
+            }
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('main > section').forEach(sec => {
+                sec.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+            updateProgress();
+        }
+
+        // 1. Diagnostic Arena Mechanics
+        function startDiagnostic() {
+            appState.currentStage = 'diagnostic';
+            appState.diagnostic.index = 0;
+            appState.diagnostic.responses = [];
+            loadDiagnosticQuestion();
+            showScreen('screen-diagnostic');
+        }
+
+        function loadDiagnosticQuestion() {
+            const currentIdx = appState.diagnostic.index;
+            const q = diagnosticQuestions[currentIdx];
+            
+            document.getElementById('diag-counter').innerText = `Question ${currentIdx + 1} of ${diagnosticQuestions.length}`;
+            document.getElementById('diag-sentence').innerText = q.text;
+            
+            // Reset options & feedback view
+            document.getElementById('diag-options-container').classList.remove('hidden');
+            document.getElementById('diag-options-container').classList.add('grid');
+            document.getElementById('diag-feedback').classList.add('hidden');
+        }
+
+        function submitDiagnostic(selection) {
+            const currentIdx = appState.diagnostic.index;
+            const q = diagnosticQuestions[currentIdx];
+            const result = q.options[selection];
+            
+            appState.diagnostic.responses.push({
+                selection: selection,
+                correct: result.correct
+            });
+
+            // Highlight and play dynamic synthesizers
+            const fbPanel = document.getElementById('diag-feedback');
+            const fbTitle = document.getElementById('diag-feedback-title');
+            const fbDesc = document.getElementById('diag-feedback-desc');
+            const fbIcon = document.getElementById('diag-feedback-icon');
+
+            if (result.correct) {
+                fbPanel.className = "mt-6 p-5 rounded-2xl border bg-emerald-50 border-emerald-200 text-emerald-900";
+                fbTitle.innerText = result.title;
+                fbIcon.innerText = "⭐";
+                Sound.play('success');
+            } else {
+                fbPanel.className = "mt-6 p-5 rounded-2xl border bg-slate-50 border-slate-200 text-slate-800";
+                fbTitle.innerText = result.title;
+                fbIcon.innerText = "💡";
+                Sound.play('fail');
+            }
+            
+            fbDesc.innerText = result.desc;
+            fbPanel.classList.remove('hidden');
+            document.getElementById('diag-options-container').classList.add('hidden');
+            document.getElementById('diag-options-container').classList.remove('grid');
+        }
+
+        function nextDiagnostic() {
+            appState.diagnostic.index++;
+            if (appState.diagnostic.index < diagnosticQuestions.length) {
+                loadDiagnosticQuestion();
+            } else {
+                // Transition to Core Lab
+                startCoreLab();
+            }
+        }
+
+        // 2. Core Lab Mechanics
+        function startCoreLab() {
+            appState.currentStage = 'lab';
+            showScreen('screen-lab');
+            switchLabTab('fragment');
+        }
+
+        function switchLabTab(tabName) {
+            // Remove active classes
+            document.querySelectorAll('[id^="tab-btn-"]').forEach(btn => {
+                btn.className = "py-3 px-4 rounded-xl font-bold text-sm heading-font transition flex flex-col sm:flex-row items-center justify-center gap-2 border-2 bg-white text-slate-600 border-slate-200 hover:bg-slate-50";
+            });
+            document.querySelectorAll('.lab-slide').forEach(slide => {
+                slide.classList.add('hidden');
+            });
+
+            // Set active class
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            if (tabName === 'fragment') {
+                activeBtn.className = "py-3 px-4 rounded-xl font-bold text-sm heading-font transition flex flex-col sm:flex-row items-center justify-center gap-2 border-2 bg-red-500 text-white border-red-500 shadow-md shadow-red-100";
+                document.getElementById('slide-fragment').classList.remove('hidden');
+            } else if (tabName === 'runon') {
+                activeBtn.className = "py-3 px-4 rounded-xl font-bold text-sm heading-font transition flex flex-col sm:flex-row items-center justify-center gap-2 border-2 bg-amber-500 text-white border-amber-500 shadow-md shadow-amber-100";
+                document.getElementById('slide-runon').classList.remove('hidden');
+            } else if (tabName === 'splice') {
+                activeBtn.className = "py-3 px-4 rounded-xl font-bold text-sm heading-font transition flex flex-col sm:flex-row items-center justify-center gap-2 border-2 bg-blue-500 text-white border-blue-500 shadow-md shadow-blue-100";
+                document.getElementById('slide-splice').classList.remove('hidden');
+            }
+        }
+
+        // 3. Sentence Repair Shop Mechanics
+        function startRepairShop() {
+            appState.currentStage = 'repair';
+            appState.repair.index = 0;
+            appState.repair.score = 0;
+            document.getElementById('repair-score').innerText = `Correct: 0 / ${repairData.length}`;
+            loadRepairChallenge();
+            showScreen('screen-repair');
+        }
+
+        function loadRepairChallenge() {
+            const rIdx = appState.repair.index;
+            const item = repairData[rIdx];
+
+            document.getElementById('repair-sentence').innerText = `"${item.problem}"`;
+            document.getElementById('repair-feedback').classList.add('hidden');
+            document.getElementById('repair-continue').classList.add('hidden');
+
+            const optContainer = document.getElementById('repair-options');
+            optContainer.innerHTML = '';
+
+            item.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-50 hover:bg-slate-100 border border-slate-200 hover:border-indigo-300 p-4 rounded-xl font-semibold transition text-slate-700 text-sm flex gap-3 items-center";
+                btn.onclick = () => submitRepair(idx);
+                
+                const badge = document.createElement('span');
+                badge.className = "w-7 h-7 bg-white border border-slate-300 flex items-center justify-center rounded-lg text-xs font-bold shrink-0";
+                badge.innerText = String.fromCharCode(65 + idx); // A, B, C
+
+                const textSpan = document.createElement('span');
+                textSpan.innerText = opt.text;
+
+                btn.appendChild(badge);
+                btn.appendChild(textSpan);
+                optContainer.appendChild(btn);
+            });
+        }
+
+        function submitRepair(optionIdx) {
+            const rIdx = appState.repair.index;
+            const selected = repairData[rIdx].options[optionIdx];
+            const fbPanel = document.getElementById('repair-feedback');
+            const fbText = document.getElementById('repair-feedback-text');
+
+            fbPanel.classList.remove('hidden');
+
+            if (selected.isCorrect) {
+                appState.repair.score++;
+                document.getElementById('repair-score').innerText = `Correct: ${appState.repair.score} / ${repairData.length}`;
+                fbPanel.className = "p-5 rounded-2xl border bg-emerald-50 border-emerald-200 text-emerald-900";
+                fbText.innerHTML = `<strong>✨ Perfect Fix!</strong> ${selected.feedback}`;
+                Sound.play('success');
+            } else {
+                fbPanel.className = "p-5 rounded-2xl border bg-red-50 border-red-200 text-red-900";
+                fbText.innerHTML = `<strong>❌ Critical Damage.</strong> ${selected.feedback}`;
+                Sound.play('fail');
+            }
+
+            // Disable other options
+            document.getElementById('repair-options').querySelectorAll('button').forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-55');
+            });
+
+            document.getElementById('repair-continue').classList.remove('hidden');
+        }
+
+        function nextRepairChallenge() {
+            appState.repair.index++;
+            if (appState.repair.index < repairData.length) {
+                loadRepairChallenge();
+            } else {
+                startBossBattle();
+            }
+        }
+
+        // 4. Final Escape Room / RPG Battle Mechanics
+        function startBossBattle() {
+            appState.currentStage = 'boss';
+            appState.boss.index = 0;
+            appState.boss.score = 0;
+            appState.boss.playerLife = 3;
+            appState.boss.enemyLife = 3;
+
+            updateBossUI();
+            loadBossLevel();
+            showScreen('screen-boss');
+        }
+
+        function updateBossUI() {
+            document.getElementById('boss-life').innerText = `❤️ HEALTH: ${appState.boss.playerLife}/3`;
+            const enemyBar = document.getElementById('boss-enemy-health');
+            const percent = (appState.boss.enemyLife / 3) * 100;
+            enemyBar.style.width = `${percent}%`;
+        }
+
+        function loadBossLevel() {
+            const bIdx = appState.boss.index;
+            const level = bossData[bIdx];
+
+            document.getElementById('boss-sentence').innerText = `"${level.text}"`;
+            document.getElementById('boss-feedback').classList.add('hidden');
+
+            const choiceContainer = document.getElementById('boss-choices-container');
+            choiceContainer.innerHTML = '';
+
+            level.choices.forEach((choice, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-800 hover:bg-slate-700 hover:text-white border border-slate-700/60 p-3 rounded-lg text-slate-300 font-medium transition text-xs flex gap-2 items-center";
+                btn.onclick = () => submitBossAttack(choice);
+                
+                const bullet = document.createElement('span');
+                bullet.className = "text-indigo-400 font-bold";
+                bullet.innerText = `[PATCH ${idx + 1}]`;
+
+                const spanText = document.createElement('span');
+                spanText.innerText = choice.text;
+
+                btn.appendChild(bullet);
+                btn.appendChild(spanText);
+                choiceContainer.appendChild(btn);
+            });
+        }
+
+        function submitBossAttack(choice) {
+            const bIdx = appState.boss.index;
+            const feedbackPanel = document.getElementById('boss-feedback');
+            
+            feedbackPanel.classList.remove('hidden');
+
+            if (choice.isCorrect) {
+                appState.boss.enemyLife -= choice.damage;
+                appState.boss.score++;
+                feedbackPanel.className = "p-4 rounded-xl border border-emerald-950 bg-emerald-950/40 text-emerald-400 text-xs font-semibold";
+                feedbackPanel.innerText = `💥 SUCCESS! You deal critical damage. The sentence logic is saved.`;
+                Sound.play('success');
+            } else {
+                appState.boss.playerLife -= 1;
+                feedbackPanel.className = "p-4 rounded-xl border border-rose-950 bg-rose-950/40 text-rose-400 text-xs font-semibold";
+                feedbackPanel.innerText = `⚡ ERROR! The Overlord deflects your patch and damages your health!`;
+                Sound.play('fail');
+            }
+
+            updateBossUI();
+
+            // Disable choices
+            document.getElementById('boss-choices-container').querySelectorAll('button').forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-50');
+            });
+
+            setTimeout(() => {
+                appState.boss.index++;
+                
+                // Game over scenarios
+                if (appState.boss.playerLife <= 0) {
+                    // Try again
+                    alert("Game Over! The sentence mechanics overrode your paper's design. Let's practice with the repair tools and try again!");
+                    startRepairShop();
+                } else if (appState.boss.index >= bossData.length) {
+                    if (appState.boss.score >= 2) {
+                        completeWorkshop();
+                    } else {
+                        alert("Close, but Ramirez's paper needs at least 2 correct repairs. Try the repair round again!");
+                        startRepairShop();
+                    }
+                } else {
+                    loadBossLevel();
+                }
+            }, 2500);
+        }
+
+        // 5. Completion Screen
+        function completeWorkshop() {
+            appState.currentStage = 'certificate';
+            showScreen('screen-certificate');
+            Sound.play('victory');
+        }
+
+        function restartWorkshop() {
+            appState.currentStage = 'welcome';
+            showScreen('screen-welcome');
+        }
+
+        // Initialize progress bar on boot
+        updateProgress();
+    </script>
+</body>
+</html>
+
+
+### Key Pedagogical Choices Inside This Workshop
+* **Metaphors Over Terminology First:** Incoming college freshmen often get intimidated by academic words like "independent clauses." By using intuitive categories (Ghost Sentence, Speeding Train, Weak Glue) during the Diagnostic Arena first, students build confidence before learning the formal syntax rules.
+* **Low Stakes, Relatable Context:** The sentences are constructed using themes direct from the typical community college freshman experience (campus parking, cafeteria food, financial aid lines) to maximize immediate empathy and retention.
+* **Active Repair Sandbox:** Rather than a simple multiple-choice quiz, students work with interactive builders, showing them structurally exactly *why* a particular correction works over others.
