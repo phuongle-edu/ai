@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLA Style & Citations Examination (9th Edition)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            .print-break-inside-avoid {
+                page-break-inside: avoid;
+            }
+            body {
+                background-color: white !important;
+                color: black !important;
+            }
+            .shadow-card {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+        }
+        .shadow-card {
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
+
+    <!-- Top Banner / Header -->
+    <header class="bg-indigo-900 text-white shadow-md no-print">
+        <div class="max-w-6xl mx-auto px-4 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <span class="bg-indigo-700 text-indigo-200 text-xs font-semibold px-2.5 py-1 rounded-full uppercase tracking-wider">Academic Assessment</span>
+                <h1 class="text-2xl md:text-3xl font-bold mt-1">MLA Style & Citations Examination</h1>
+                <p class="text-indigo-200 text-sm mt-1">Aligned with the MLA Handbook, 9th Edition • Target: College / Undergraduate</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <button id="btn-toggle-view" onclick="toggleViewMode()" class="bg-indigo-700 hover:bg-indigo-600 transition px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i class="fa-solid var(--view-icon, fa-eye)"></i>
+                    <span id="view-mode-text">Switch to Instructor Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- App Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+        <!-- Control Dashboard (No Print) -->
+        <div class="bg-white rounded-2xl p-6 mb-8 shadow-card border border-slate-100 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 no-print">
+            <div class="space-y-1">
+                <h2 class="text-lg font-semibold text-slate-900">Configure & Download Options</h2>
+                <p class="text-sm text-slate-500">Prepare paper exams, digital documents, or import directly into your Learning Management System (LMS).</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="downloadPDF(false)" class="bg-emerald-600 hover:bg-emerald-700 text-white transition px-4 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-file-pdf"></i> Download Blank PDF
+                </button>
+                <button onclick="downloadPDF(true)" class="bg-teal-600 hover:bg-teal-700 text-white transition px-4 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-file-signature"></i> Download Answer Key PDF
+                </button>
+                <button onclick="downloadQTI()" class="bg-amber-600 hover:bg-amber-700 text-white transition px-4 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-cloud-arrow-down"></i> Download QTI for Brightspace
+                </button>
+            </div>
+        </div>
+
+        <!-- Instructor mode informational banner (starts hidden) -->
+        <div id="instructor-banner" class="hidden bg-indigo-50 border border-indigo-200 text-indigo-900 rounded-xl p-4 mb-8 flex items-start gap-3 no-print">
+            <i class="fa-solid fa-circle-info text-indigo-600 mt-1 text-lg"></i>
+            <div>
+                <h3 class="font-semibold text-sm">Instructor Mode Active</h3>
+                <p class="text-xs text-indigo-700 mt-0.5">The exam is displaying all correct answers, analytical rationales, and grading guides. Students will not see these during an interactive run. You can print this state as a complete Answer Key.</p>
+            </div>
+        </div>
+
+        <form id="quiz-form" onsubmit="gradeQuiz(event)" class="space-y-8">
+            <!-- SECTION 1: Multiple Choice (1 - 5) -->
+            <div class="space-y-6">
+                <div class="border-b border-slate-200 pb-2">
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight">Section I: Multiple Choice</h3>
+                    <p class="text-xs text-slate-500 uppercase tracking-widest mt-0.5">Questions 1 to 5 • 5 Points Each</p>
+                </div>
+
+                <!-- Q1 -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">1</span>
+                        <div class="space-y-4 w-full">
+                            <p class="font-medium text-slate-900 text-base">Which of the following correct sequences represents the first four core elements of an MLA 9th edition Works Cited entry?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q1" value="A" class="mt-1 accent-indigo-600">
+                                    <span>Title of source, Author, Title of container, Version.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q1" value="B" class="mt-1 accent-indigo-600">
+                                    <span>Author. Title of source. Title of container, Contributor,</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q1" value="C" class="mt-1 accent-indigo-600">
+                                    <span>Author. Title of container, Title of source, Publisher,</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q1" value="D" class="mt-1 accent-indigo-600">
+                                    <span>Title of source, Contributor, Publisher, Publication date.</span>
+                                </label>
+                            </div>
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>Recall that MLA uses a structured template of core elements starting with the creator and their work before moving onto where it was found.</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">2</span>
+                        <div class="space-y-4 w-full">
+                            <p class="font-medium text-slate-900 text-base">In MLA Style, what is a "container"?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q2" value="A" class="mt-1 accent-indigo-600">
+                                    <span>The storage folder used by university librarians for archived physical documents.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q2" value="B" class="mt-1 accent-indigo-600">
+                                    <span>The larger work (e.g., a journal, website, or database) in which a specific source is nested.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q2" value="C" class="mt-1 accent-indigo-600">
+                                    <span>A physical binder or digital portfolio that collects student drafts before grading.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q2" value="D" class="mt-1 accent-indigo-600">
+                                    <span>The bracketed notation system used to clarify translation details in foreign sources.</span>
+                                </label>
+                            </div>
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>A container holds the individual item (like an essay, video, or article) and is typically formatted in italics.</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">3</span>
+                        <div class="space-y-4 w-full">
+                            <p class="font-medium text-slate-900 text-base">Which of the following represents the correct format for an MLA parenthetical in-text citation when the author is <strong>not</strong> mentioned in the signal phrase?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q3" value="A" class="mt-1 accent-indigo-600">
+                                    <span>(Wordsworth, p. 263)</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q3" value="B" class="mt-1 accent-indigo-600">
+                                    <span>(Wordsworth 263)</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q3" value="C" class="mt-1 accent-indigo-600">
+                                    <span>(Wordsworth, 263)</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q3" value="D" class="mt-1 accent-indigo-600">
+                                    <span>(Wordsworth, pg. 263)</span>
+                                </label>
+                            </div>
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>MLA parentheticals avoid commas between the author's last name and the specific page reference, and do not use abbreviations for "page".</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">4</span>
+                        <div class="space-y-4 w-full">
+                            <p class="font-medium text-slate-900 text-base">How should the Works Cited page be formatted according to standard MLA guidelines?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q4" value="A" class="mt-1 accent-indigo-600">
+                                    <span>Single-spaced, numbered in order of citation occurrence, with a block indent layout.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q4" value="B" class="mt-1 accent-indigo-600">
+                                    <span>Double-spaced, alphabetized by the author's last name (or title), using a hanging indent of 0.5 inches.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q4" value="C" class="mt-1 accent-indigo-600">
+                                    <span>Double-spaced, organized chronologically by the year of publication, using standard paragraphs.</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q4" value="D" class="mt-1 accent-indigo-600">
+                                    <span>Alphabetized by source medium (e.g., books first, then websites), single-spaced with a 1-inch indent.</span>
+                                </label>
+                            </div>
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>Consider how entries are aligned; subsequent lines of a single source entry must "hang" back so the alphabetized word stands out.</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">5</span>
+                        <div class="space-y-4 w-full">
+                            <p class="font-medium text-slate-900 text-base">How should you format an in-text parenthetical citation for a source that has <strong>three or more</strong> authors?</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q5" value="A" class="mt-1 accent-indigo-600">
+                                    <span>(Smith, Jones, and Miller 45)</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q5" value="B" class="mt-1 accent-indigo-600">
+                                    <span>(Smith et al. 45)</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q5" value="C" class="mt-1 accent-indigo-600">
+                                    <span>(Smith and others, 45)</span>
+                                </label>
+                                <label class="flex items-start gap-3 p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition text-sm">
+                                    <input type="radio" name="q5" value="D" class="mt-1 accent-indigo-600">
+                                    <span>(Smith & Co. 45)</span>
+                                </label>
+                            </div>
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>MLA relies on an abbreviated Latin phrase meaning "and others" to streamline listings containing multiple creators.</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Matching (6 - 7) -->
+            <div class="space-y-6">
+                <div class="border-b border-slate-200 pb-2">
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight">Section II: Matching Exercises</h3>
+                    <p class="text-xs text-slate-500 uppercase tracking-widest mt-0.5">Questions 6 to 7 • 10 Points Each (2.5 pts per sub-item)</p>
+                </div>
+
+                <!-- Q6 Matching Core Element Punctuation -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">6</span>
+                        <div class="space-y-4 w-full">
+                            <h4 class="font-semibold text-slate-950">Match each MLA Core Element to its correct styling or trailing punctuation in the Works Cited template.</h4>
+                            
+                            <div class="space-y-3">
+                                <!-- Match Item 1 -->
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl border border-slate-150">
+                                    <span class="text-sm font-medium text-slate-700 md:w-1/2">1. Author Name</span>
+                                    <select name="q6_1" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 md:w-1/2">
+                                        <option value="">-- Select Description --</option>
+                                        <option value="A">Followed by a period; styled in regular font (e.g., Last Name, First Name.)</option>
+                                        <option value="B">Italicized; followed by a comma if other elements succeed it</option>
+                                        <option value="C">Enclosed in double quotation marks; followed by a period</option>
+                                        <option value="D">Placed in regular font; followed by a comma (e.g., Academic Press,)</option>
+                                    </select>
+                                </div>
+                                <!-- Match Item 2 -->
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl border border-slate-150">
+                                    <span class="text-sm font-medium text-slate-700 md:w-1/2">2. Title of Source (e.g., Short Story / Article)</span>
+                                    <select name="q6_2" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 md:w-1/2">
+                                        <option value="">-- Select Description --</option>
+                                        <option value="A">Followed by a period; styled in regular font (e.g., Last Name, First Name.)</option>
+                                        <option value="B">Italicized; followed by a comma if other elements succeed it</option>
+                                        <option value="C">Enclosed in double quotation marks; followed by a period</option>
+                                        <option value="D">Placed in regular font; followed by a comma (e.g., Academic Press,)</option>
+                                    </select>
+                                </div>
+                                <!-- Match Item 3 -->
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl border border-slate-150">
+                                    <span class="text-sm font-medium text-slate-700 md:w-1/2">3. Title of Container (e.g., Journal or Website)</span>
+                                    <select name="q6_3" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 md:w-1/2">
+                                        <option value="">-- Select Description --</option>
+                                        <option value="A">Followed by a period; styled in regular font (e.g., Last Name, First Name.)</option>
+                                        <option value="B">Italicized; followed by a comma if other elements succeed it</option>
+                                        <option value="C">Enclosed in double quotation marks; followed by a period</option>
+                                        <option value="D">Placed in regular font; followed by a comma (e.g., Academic Press,)</option>
+                                    </select>
+                                </div>
+                                <!-- Match Item 4 -->
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl border border-slate-150">
+                                    <span class="text-sm font-medium text-slate-700 md:w-1/2">4. Publisher Element</span>
+                                    <select name="q6_4" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 md:w-1/2">
+                                        <option value="">-- Select Description --</option>
+                                        <option value="A">Followed by a period; styled in regular font (e.g., Last Name, First Name.)</option>
+                                        <option value="B">Italicized; followed by a comma if other elements succeed it</option>
+                                        <option value="C">Enclosed in double quotation marks; followed by a period</option>
+                                        <option value="D">Placed in regular font; followed by a comma (e.g., Academic Press,)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>Remember that the Author is the primary originator of the entire entry, and the Publisher organizes/produces the material container itself.</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q7 Matching Source Types to Formatting -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">7</span>
+                        <div class="space-y-4 w-full">
+                            <h4 class="font-semibold text-slate-950">Match each source example to its primary medium/formatting characteristic in an MLA Works Cited entry.</h4>
+                            
+                            <div class="space-y-3">
+                                <!-- Match Item 1 -->
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl border border-slate-150">
+                                    <span class="text-sm font-medium text-slate-700 md:w-1/2">1. A Page on a Website</span>
+                                    <select name="q7_1" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 md:w-1/2">
+                                        <option value="">-- Select Description --</option>
+                                        <option value="A">Requires both a Journal Container and an online Database Container (Two-container model)</option>
+                                        <option value="B">Requires the title of the individual page in quotation marks, and the website's name in italics</option>
+                                        <option value="C">Includes a publisher, but generally omits container titles unless it is an e-book</option>
+                                        <option value="D">Citations start directly with the title of the item, since personal creators are absent</option>
+                                    </select>
+                                </div>
+                                <!-- Match Item 2 -->
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl border border-slate-150">
+                                    <span class="text-sm font-medium text-slate-700 md:w-1/2">2. A Scholarly Article found via JSTOR</span>
+                                    <select name="q7_2" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 md:w-1/2">
+                                        <option value="">-- Select Description --</option>
+                                        <option value="A">Requires both a Journal Container and an online Database Container (Two-container model)</option>
+                                        <option value="B">Requires the title of the individual page in quotation marks, and the website's name in italics</option>
+                                        <option value="C">Includes a publisher, but generally omits container titles unless it is an e-book</option>
+                                        <option value="D">Citations start directly with the title of the item, since personal creators are absent</option>
+                                    </select>
+                                </div>
+                                <!-- Match Item 3 -->
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl border border-slate-150">
+                                    <span class="text-sm font-medium text-slate-700 md:w-1/2">3. A standard Print Book</span>
+                                    <select name="q7_3" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 md:w-1/2">
+                                        <option value="">-- Select Description --</option>
+                                        <option value="A">Requires both a Journal Container and an online Database Container (Two-container model)</option>
+                                        <option value="B">Requires the title of the individual page in quotation marks, and the website's name in italics</option>
+                                        <option value="C">Includes a publisher, but generally omits container titles unless it is an e-book</option>
+                                        <option value="D">Citations start directly with the title of the item, since personal creators are absent</option>
+                                    </select>
+                                </div>
+                                <!-- Match Item 4 -->
+                                <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 p-3 rounded-xl border border-slate-150">
+                                    <span class="text-sm font-medium text-slate-700 md:w-1/2">4. A Source with no named author</span>
+                                    <select name="q7_4" class="bg-slate-50 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-indigo-500 md:w-1/2">
+                                        <option value="">-- Select Description --</option>
+                                        <option value="A">Requires both a Journal Container and an online Database Container (Two-container model)</option>
+                                        <option value="B">Requires the title of the individual page in quotation marks, and the website's name in italics</option>
+                                        <option value="C">Includes a publisher, but generally omits container titles unless it is an e-book</option>
+                                        <option value="D">Citations start directly with the title of the item, since personal creators are absent</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>Note that academic portals hosting electronic journals are considered nested spaces of origin.</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: Fill-in-the-Blank (8 - 9) -->
+            <div class="space-y-6">
+                <div class="border-b border-slate-200 pb-2">
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight">Section III: Fill-in-the-Blank</h3>
+                    <p class="text-xs text-slate-500 uppercase tracking-widest mt-0.5">Questions 8 to 9 • 10 Points Each</p>
+                </div>
+
+                <!-- Q8 -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">8</span>
+                        <div class="space-y-4 w-full">
+                            <p class="font-medium text-slate-900 text-base leading-relaxed">
+                                In MLA style, the descriptive title centered at the top of the bibliography page that contains the list of all consulted academic papers and referenced works is exactly titled: 
+                                <input type="text" id="q8_input" placeholder="Enter title (case-sensitive)" class="mx-1 px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold text-slate-900 placeholder:font-normal">
+                                (Do not wrap this text in quotation marks or format it in italics).
+                            </p>
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>This exact phrase is plural because it lists multiple citations. Ensure you capitalize both words properly.</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q9 -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">9</span>
+                        <div class="space-y-4 w-full">
+                            <p class="font-medium text-slate-900 text-base leading-relaxed">
+                                When referencing a specific paragraph rather than a page number in an in-text parenthetical citation, MLA requires you to write the abbreviation 
+                                <input type="text" id="q9_input" placeholder="e.g., p." class="mx-1 w-24 text-center px-3 py-1.5 border border-slate-300 rounded-lg text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-semibold text-slate-900"> 
+                                followed by a space and the number (e.g., Smith [abbreviation] 4).
+                            </p>
+                            <div class="hint-block hidden bg-amber-50 text-amber-900 text-xs rounded-xl p-3 border border-amber-150 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb mt-0.5 shrink-0"></i>
+                                <span>The abbreviation is three lowercase letters and ends with a period.</span>
+                            </div>
+                            <div class="feedback hidden rounded-xl p-4 text-sm mt-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: Short Essay (10) -->
+            <div class="space-y-6">
+                <div class="border-b border-slate-200 pb-2">
+                    <h3 class="text-xl font-bold text-slate-900 tracking-tight">Section IV: Analytical Short Essay</h3>
+                    <p class="text-xs text-slate-500 uppercase tracking-widest mt-0.5">Question 10 • 30 Points Total</p>
+                </div>
+
+                <!-- Q10 -->
+                <div class="bg-white rounded-2xl p-6 shadow-card border border-slate-100 print-break-inside-avoid relative transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <span class="flex items-center justify-center bg-slate-100 text-slate-700 text-sm font-bold w-8 h-8 rounded-lg shrink-0">10</span>
+                        <div class="space-y-4 w-full">
+                            <div class="space-y-2">
+                                <h4 class="font-semibold text-slate-900 text-lg leading-relaxed">Containers and Nested Citations in MLA 9th Edition</h4>
+                                <p class="text-sm text-slate-650 leading-relaxed">
+                                    Explain the foundational concept of <strong>nested containers</strong> in MLA 9th edition. Describe how a single item—such as an episode of a streaming television series or a digitized journal article—can require a two-container template structure. Provide or map out a hypothetical Works Cited example highlighting the transition from Container 1 to Container 2, including expected punctuation.
+                                </p>
+                            </div>
+
+                            <!-- Interactive Response Box -->
+                            <div class="no-print">
+                                <textarea id="q10_essay" rows="8" placeholder="Type your response here... (Recommended: 150-250 words)" class="w-full p-4 border border-slate-300 rounded-xl bg-slate-55 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-slate-800 placeholder:text-slate-400"></textarea>
+                            </div>
+
+                            <!-- Printable Lines for Paper Mode -->
+                            <div class="hidden print:block space-y-4 pt-4">
+                                <div class="border-b border-slate-300 h-8"></div>
+                                <div class="border-b border-slate-300 h-8"></div>
+                                <div class="border-b border-slate-300 h-8"></div>
+                                <div class="border-b border-slate-300 h-8"></div>
+                                <div class="border-b border-slate-300 h-8"></div>
+                                <div class="border-b border-slate-300 h-8"></div>
+                            </div>
+
+                            <!-- Grading Rubric & Exemplar (Instructor View) -->
+                            <div id="essay-grading-guide" class="hidden bg-slate-50 rounded-xl p-4 border border-slate-200 mt-4 space-y-3">
+                                <h5 class="font-semibold text-xs text-indigo-900 uppercase tracking-wider">Instructor Grading Criteria & Exemplar</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-700 leading-relaxed">
+                                    <div>
+                                        <p class="font-semibold text-slate-900 mb-1">Key Requirements to Assess (30 Points):</p>
+                                        <ul class="list-disc list-inside space-y-1">
+                                            <li><strong>Container 1 identification (10 pts):</strong> Correctly identifies the direct platform/journal publishing the individual item.</li>
+                                            <li><strong>Container 2 identification (10 pts):</strong> Explains the network, aggregator, or digital database hosting Container 1.</li>
+                                            <li><strong>Punctuation transition (10 pts):</strong> Shows that Container 1 elements conclude with a comma before nesting into Container 2.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-t md:border-t-0 md:border-l border-slate-200 pt-3 md:pt-0 md:pl-4">
+                                        <p class="font-semibold text-slate-900 mb-1">Model Exemplar Response:</p>
+                                        <p class="italic">
+                                            "In MLA 9th edition, a container refers to the larger work harboring a cited source. A digitized source often has nested containers. For example, in an academic journal article accessed via JSTOR, Container 1 is the original print journal (e.g., <em>Critical Inquiry</em>) holding the article. Container 2 is the online database JSTOR which hosts the journal. Punctuation follows a logical nesting logic: elements within Container 1 end with a comma, which links it seamlessly to Container 2 details (e.g., URL or DOI), concluded with a period. <br>
+                                            <strong>Example format:</strong> <br>
+                                            Alpers, Paul. 'Lycidas and Modern Criticism.' <em>ELH</em>, vol. 49, no. 2, 1982, pp. 468-496. <em>JSTOR</em>, www.jstor.org/stable/2872740."
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action buttons (No Print) -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 pb-12 border-t border-slate-200 no-print">
+                <button type="button" onclick="toggleHints()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium px-5 py-2.5 rounded-xl transition text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lightbulb"></i> <span id="toggle-hints-text">Show All Hints</span>
+                </button>
+                <div class="flex gap-3">
+                    <button type="button" onclick="resetForm()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-medium px-5 py-2.5 rounded-xl transition text-sm">
+                        Reset Exam
+                    </button>
+                    <button type="submit" id="btn-submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2.5 rounded-xl transition text-sm shadow-md flex items-center gap-2">
+                        <i class="fa-solid fa-square-poll-vertical"></i> Grade My Exam
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Grade Report Container (No Print) -->
+        <div id="grade-report" class="hidden bg-white border border-slate-200 shadow-xl rounded-2xl p-6 mb-12 max-w-2xl mx-auto text-center space-y-4 no-print animate-fade-in">
+            <div class="inline-flex items-center justify-center bg-indigo-50 text-indigo-600 rounded-full w-16 h-16 mb-2">
+                <i class="fa-solid fa-graduation-cap text-3xl"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900">Examination Graded</h3>
+            <div class="py-4 px-6 bg-slate-50 rounded-xl inline-block">
+                <p class="text-xs text-slate-500 uppercase tracking-widest font-semibold">Interactive Score</p>
+                <p class="text-4xl font-extrabold text-indigo-700 mt-1" id="calculated-score">0 / 70</p>
+                <p class="text-xs text-slate-400 mt-1">Excludes Essay Question (worth 30 points)</p>
+            </div>
+            <p class="text-sm text-slate-600 max-w-md mx-auto" id="grade-summary-text">
+                Review your detailed answers and rationales below. Each correct answer is framed in emerald, and incorrect matching items have been highlighted.
+            </p>
+            <div>
+                <button onclick="scrollToTop()" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 hover:underline">
+                    <i class="fa-solid fa-arrow-up"></i> Review Answers Below
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-10 mt-auto border-t border-slate-800 no-print">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="space-y-1">
+                <p class="text-sm font-semibold text-white">MLA Citation & Style Assessment Workspace</p>
+                <p class="text-xs">Dynamic QTI & PDF compiling utility engine. Supported for Brightspace, Canvas, and Blackboard.</p>
+            </div>
+            <div class="text-xs">
+                © 2026 Academic Resources Hub. Distributed under MIT License.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS Logic & Script Compilation -->
+    <script>
+        // Global State Variables
+        let isInstructorMode = false;
+        let hintsVisible = false;
+
+        // Solution Matrix for Automated Grading
+        const answers = {
+            q1: "B",
+            q2: "B",
+            q3: "B",
+            q4: "B",
+            q5: "B",
+            q6_1: "A",
+            q6_2: "C",
+            q6_3: "B",
+            q6_4: "D",
+            q7_1: "B",
+            q7_2: "A",
+            q7_3: "C",
+            q7_4: "D",
+            q8: "Works Cited",
+            q9: "par."
+        };
+
+        // Explanations & Rationales for Grading
+        const rationales = {
+            q1: {
+                A: "Incorrect. The creator (Author) always represents the first core element before the source title.",
+                B: "Correct. Standard MLA core templates sequence Author, Source Title, Container Title, and other contributors.",
+                C: "Incorrect. Container titles exist further down the nested elements, after individual source titles.",
+                D: "Incorrect. MLA prioritizes the individual entity (Author) first before structural platform elements."
+            },
+            q2: {
+                A: "Incorrect. A container refers specifically to the conceptual publication frame holding the article.",
+                B: "Correct. A container in MLA terminology is the larger hosting structure (like a journal, anthology, or platform).",
+                C: "Incorrect. Physical portfolios are part of administrative handling, not standard bibliographies.",
+                D: "Incorrect. Brackets are for translating or inserting local contextual data, not structural organization."
+            },
+            q3: {
+                A: "Incorrect. MLA in-text style explicitly discourages the inclusion of commas and the 'p.' descriptor.",
+                B: "Correct. A standard MLA citation requires only the author's last name and the page number without punctuation.",
+                C: "Incorrect. Commas should never break the author's name and the numerical page citation in standard MLA.",
+                D: "Incorrect. The use of 'pg.' represents an older style or alternate formats not supported by MLA 9."
+            },
+            q4: {
+                A: "Incorrect. Standard works cited listings require hanging indents and double-spacing rather than blocks.",
+                B: "Correct. A works cited list is systematically alphabetized, double-spaced, and formatted with hanging margins.",
+                C: "Incorrect. Standard bibliographical lists follow alphabetization to ease reader retrieval, not timeline years.",
+                D: "Incorrect. Separating sources by media is obsolete; MLA formats all media under a unified, consolidated structure."
+            },
+            q5: {
+                A: "Incorrect. Three or more authors are abbreviated using the Latin shorthand instead of listing all names.",
+                B: "Correct. When a resource contains three or more authors, truncate the reference with the primary author and 'et al.'",
+                C: "Incorrect. English terms like 'and others' are not used in modern academic MLA parentheticals.",
+                D: "Incorrect. Formal citation avoids business indicators like '& Co.' in parentheticals."
+            },
+            q6: {
+                "1": "Correct. Author elements require standard formatting ending with a period.",
+                "2": "Correct. Specific standalone works or items nested in larger volumes are contained within quotations.",
+                "3": "Correct. Overall parent publications require distinct italicization to represent physical or digital volumes.",
+                "4": "Correct. Publishers denote secondary entities responsible for releasing materials and require commas."
+            },
+            q7: {
+                "1": "Correct. Online pages list specific components inside quotation marks, nesting in larger italicized domains.",
+                "2": "Correct. Articles retrieved via JSTOR require standard dual container entries (the parent journal then database).",
+                "3": "Correct. Complete standalone hardback volumes list primary publishers and forgo secondary platforms.",
+                "4": "Correct. Anonymous publications shift titles to the start of references."
+            }
+        };
+
+        // Toggle Student / Instructor Mode
+        function toggleViewMode() {
+            isInstructorMode = !isInstructorMode;
+            
+            const btn = document.getElementById('btn-toggle-view');
+            const viewText = document.getElementById('view-mode-text');
+            const instructorBanner = document.getElementById('instructor-banner');
+            const essayGuide = document.getElementById('essay-grading-guide');
+
+            if (isInstructorMode) {
+                btn.className = "bg-amber-600 hover:bg-amber-500 transition px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2";
+                btn.innerHTML = '<i class="fa-solid fa-graduation-cap"></i> <span>Switch to Student Mode</span>';
+                instructorBanner.classList.remove('hidden');
+                essayGuide.classList.remove('hidden');
+                populateInstructorAnswers();
+            } else {
+                btn.className = "bg-indigo-700 hover:bg-indigo-600 transition px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2";
+                btn.innerHTML = '<i class="fa-solid fa-eye"></i> <span>Switch to Instructor Mode</span>';
+                instructorBanner.classList.add('hidden');
+                essayGuide.classList.add('hidden');
+                clearInstructorAnswers();
+            }
+        }
+
+        // Show/Hide Hints
+        function toggleHints() {
+            hintsVisible = !hintsVisible;
+            const hintBlocks = document.querySelectorAll('.hint-block');
+            const btnText = document.getElementById('toggle-hints-text');
+
+            hintBlocks.forEach(block => {
+                if (hintsVisible) {
+                    block.classList.remove('hidden');
+                } else {
+                    block.classList.add('hidden');
+                }
+            });
+
+            btnText.textContent = hintsVisible ? "Hide All Hints" : "Show All Hints";
+        }
+
+        // Populate Correct Answers for Instructors
+        function populateInstructorAnswers() {
+            // Radio Buttons
+            for (let qNum of ['q1', 'q2', 'q3', 'q4', 'q5']) {
+                const radios = document.getElementsByName(qNum);
+                radios.forEach(radio => {
+                    if (radio.value === answers[qNum]) {
+                        radio.checked = true;
+                        radio.parentElement.classList.add('bg-emerald-50', 'border-emerald-300');
+                    } else {
+                        radio.parentElement.classList.remove('bg-emerald-50', 'border-emerald-300');
+                    }
+                });
+            }
+
+            // Select Dropdowns (Section II)
+            for (let selectName of ['q6_1', 'q6_2', 'q6_3', 'q6_4', 'q7_1', 'q7_2', 'q7_3', 'q7_4']) {
+                const el = document.getElementsByName(selectName)[0];
+                if (el) {
+                    el.value = answers[selectName];
+                    el.classList.add('bg-emerald-50', 'border-emerald-300');
+                }
+            }
+
+            // Fill-in-the-Blanks (Section III)
+            document.getElementById('q8_input').value = answers.q8;
+            document.getElementById('q8_input').classList.add('bg-emerald-50', 'border-emerald-300');
+            document.getElementById('q9_input').value = answers.q9;
+            document.getElementById('q9_input').classList.add('bg-emerald-50', 'border-emerald-300');
+
+            // Essay response (Section IV)
+            document.getElementById('q10_essay').value = "Instructor reference details are displayed in the highlighted box below. Review nested containers structures and punctuation transitions.";
+        }
+
+        // Clear Instructor Mode entries
+        function clearInstructorAnswers() {
+            // Uncheck and clear styling
+            const form = document.getElementById('quiz-form');
+            form.reset();
+
+            const highlightClasses = ['bg-emerald-50', 'border-emerald-300', 'bg-rose-50', 'border-rose-300'];
+            document.querySelectorAll('label, select, input').forEach(el => {
+                el.classList.remove(...highlightClasses);
+            });
+            document.querySelectorAll('.feedback').forEach(el => {
+                el.classList.add('hidden');
+            });
+        }
+
+        // Reset Quiz completely
+        function resetForm() {
+            document.getElementById('quiz-form').reset();
+            document.getElementById('grade-report').classList.add('hidden');
+            
+            document.querySelectorAll('.feedback').forEach(f => {
+                f.classList.add('hidden');
+                f.innerHTML = '';
+            });
+
+            document.querySelectorAll('label, select, input').forEach(el => {
+                el.classList.remove('bg-emerald-50', 'border-emerald-300', 'bg-rose-50', 'border-rose-300');
+            });
+
+            scrollToTop();
+        }
+
+        // Grade Student Interactive Submission
+        function gradeQuiz(event) {
+            event.preventDefault();
+
+            let score = 0;
+            const totalMCPoints = 25; // 5 questions * 5 pts
+            const totalMatchingPoints = 20; // 2 sets * 10 pts
+            const totalFillPoints = 20; // 2 questions * 10 pts
+            const maxInteractivePoints = 65; 
+
+            // 1. Grade MC (Q1 - Q5)
+            for (let qIndex of ['q1', 'q2', 'q3', 'q4', 'q5']) {
+                const radios = document.getElementsByName(qIndex);
+                let selectedVal = null;
+                radios.forEach(r => {
+                    if (r.checked) selectedVal = r.value;
+                });
+
+                const parentCard = radios[0].closest('.print-break-inside-avoid');
+                const feedbackBlock = parentCard.querySelector('.feedback');
+                feedbackBlock.classList.remove('hidden');
+
+                if (selectedVal === answers[qIndex]) {
+                    score += 5;
+                    feedbackBlock.className = "feedback bg-emerald-50 text-emerald-800 rounded-xl p-4 text-sm mt-3 border border-emerald-150";
+                    feedbackBlock.innerHTML = `<p class="font-semibold"><i class="fa-solid fa-circle-check"></i> Correct (+5 points)</p><p class="mt-1">${rationales[qIndex][selectedVal]}</p>`;
+                    
+                    // Highlight selected correct element
+                    radios.forEach(r => {
+                        if (r.checked) r.parentElement.classList.add('bg-emerald-50', 'border-emerald-300');
+                    });
+                } else {
+                    feedbackBlock.className = "feedback bg-rose-50 text-rose-800 rounded-xl p-4 text-sm mt-3 border border-rose-150";
+                    const incorrectRationale = selectedVal ? rationales[qIndex][selectedVal] : "No answer selected.";
+                    const correctChoiceLabel = Array.from(radios).find(r => r.value === answers[qIndex]).nextElementSibling.textContent;
+                    feedbackBlock.innerHTML = `
+                        <p class="font-semibold"><i class="fa-solid fa-circle-xmark"></i> Incorrect (0 points)</p>
+                        <p class="mt-1">${incorrectRationale}</p>
+                        <p class="mt-2 text-xs font-semibold text-emerald-800">Correct Answer: "${correctChoiceLabel}"</p>
+                    `;
+                    
+                    radios.forEach(r => {
+                        if (r.checked) r.parentElement.classList.add('bg-rose-50', 'border-rose-300');
+                    });
+                }
+            }
+
+            // 2. Grade Matching Set I (Q6)
+            let q6Points = 0;
+            const q6Elements = ['q6_1', 'q6_2', 'q6_3', 'q6_4'];
+            let q6Details = "";
+            q6Elements.forEach((elName, idx) => {
+                const selectEl = document.getElementsByName(elName)[0];
+                const isCorrect = selectEl.value === answers[elName];
+                if (isCorrect) {
+                    q6Points += 2.5;
+                    selectEl.classList.add('bg-emerald-50', 'border-emerald-300');
+                } else {
+                    selectEl.classList.add('bg-rose-50', 'border-rose-300');
+                }
+            });
+            score += q6Points;
+            const q6Feedback = document.getElementsByName('q6_1')[0].closest('.print-break-inside-avoid').querySelector('.feedback');
+            q6Feedback.classList.remove('hidden');
+            q6Feedback.className = q6Points === 10 ? "feedback bg-emerald-50 text-emerald-800 rounded-xl p-4 text-sm mt-3 border border-emerald-150" : "feedback bg-rose-50 text-rose-800 rounded-xl p-4 text-sm mt-3 border border-rose-150";
+            q6Feedback.innerHTML = `<p class="font-semibold">Matching Score: ${q6Points} / 10 points</p>
+                                    <p class="text-xs mt-1">Author Name: (A) • Source Title: (C) • Container: (B) • Publisher: (D)</p>`;
+
+            // 3. Grade Matching Set II (Q7)
+            let q7Points = 0;
+            const q7Elements = ['q7_1', 'q7_2', 'q7_3', 'q7_4'];
+            q7Elements.forEach((elName, idx) => {
+                const selectEl = document.getElementsByName(elName)[0];
+                const isCorrect = selectEl.value === answers[elName];
+                if (isCorrect) {
+                    q7Points += 2.5;
+                    selectEl.classList.add('bg-emerald-50', 'border-emerald-300');
+                } else {
+                    selectEl.classList.add('bg-rose-50', 'border-rose-300');
+                }
+            });
+            score += q7Points;
+            const q7Feedback = document.getElementsByName('q7_1')[0].closest('.print-break-inside-avoid').querySelector('.feedback');
+            q7Feedback.classList.remove('hidden');
+            q7Feedback.className = q7Points === 10 ? "feedback bg-emerald-50 text-emerald-800 rounded-xl p-4 text-sm mt-3 border border-emerald-150" : "feedback bg-rose-50 text-rose-800 rounded-xl p-4 text-sm mt-3 border border-rose-150";
+            q7Feedback.innerHTML = `<p class="font-semibold">Matching Score: ${q7Points} / 10 points</p>
+                                    <p class="text-xs mt-1">Website Page: (B) • Scholarly Article: (A) • Print Book: (C) • No Author: (D)</p>`;
+
+            // 4. Grade Fill-in-the-Blank Q8
+            const q8Input = document.getElementById('q8_input');
+            const q8Val = q8Input.value.trim().toLowerCase();
+            const q8Feedback = q8Input.closest('.print-break-inside-avoid').querySelector('.feedback');
+            q8Feedback.classList.remove('hidden');
+            if (q8Val === answers.q8.toLowerCase()) {
+                score += 10;
+                q8Input.classList.add('bg-emerald-50', 'border-emerald-300');
+                q8Feedback.className = "feedback bg-emerald-50 text-emerald-800 rounded-xl p-4 text-sm mt-3 border border-emerald-150";
+                q8Feedback.innerHTML = `<p class="font-semibold"><i class="fa-solid fa-circle-check"></i> Correct (+10 points)</p>`;
+            } else {
+                q8Input.classList.add('bg-rose-50', 'border-rose-300');
+                q8Feedback.className = "feedback bg-rose-50 text-rose-800 rounded-xl p-4 text-sm mt-3 border border-rose-150";
+                q8Feedback.innerHTML = `<p class="font-semibold"><i class="fa-solid fa-circle-xmark"></i> Incorrect (0 points)</p><p class="text-xs mt-1">Expected exact answer: <strong>${answers.q8}</strong></p>`;
+            }
+
+            // 5. Grade Fill-in-the-Blank Q9
+            const q9Input = document.getElementById('q9_input');
+            const q9Val = q9Input.value.trim().toLowerCase();
+            const q9Feedback = q9Input.closest('.print-break-inside-avoid').querySelector('.feedback');
+            q9Feedback.classList.remove('hidden');
+            if (q9Val === answers.q9.toLowerCase() || q9Val === "par" || q9Val === "par-") {
+                score += 10;
+                q9Input.classList.add('bg-emerald-50', 'border-emerald-300');
+                q9Feedback.className = "feedback bg-emerald-50 text-emerald-800 rounded-xl p-4 text-sm mt-3 border border-emerald-150";
+                q9Feedback.innerHTML = `<p class="font-semibold"><i class="fa-solid fa-circle-check"></i> Correct (+10 points)</p>`;
+            } else {
+                q9Input.classList.add('bg-rose-50', 'border-rose-300');
+                q9Feedback.className = "feedback bg-rose-50 text-rose-800 rounded-xl p-4 text-sm mt-3 border border-rose-150";
+                q9Feedback.innerHTML = `<p class="font-semibold"><i class="fa-solid fa-circle-xmark"></i> Incorrect (0 points)</p><p class="text-xs mt-1">Expected exact abbreviation: <strong>${answers.q9}</strong></p>`;
+            }
+
+            // Display Grade Report
+            const report = document.getElementById('grade-report');
+            report.classList.remove('hidden');
+            document.getElementById('calculated-score').textContent = `${score} / 70`;
+
+            // Display Essay guidelines automatically for self-review
+            document.getElementById('essay-grading-guide').classList.remove('hidden');
+
+            // Scroll smoothly to Grade report
+            report.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // Auxiliary Scroll Function
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* --- PDF COMPILING UTILITY ENGINE --- */
+        function downloadPDF(withKeys) {
+            // Save state prior to formatting for print
+            const priorStateInstructor = isInstructorMode;
+            
+            if (withKeys) {
+                if (!isInstructorMode) toggleViewMode();
+            } else {
+                if (isInstructorMode) toggleViewMode();
+            }
+
+            // Trigger natural printing engine optimized to output beautiful PDF via modern browser capabilities
+            window.print();
+
+            // Restore state
+            if (priorStateInstructor !== isInstructorMode) {
+                toggleViewMode();
+            }
+        }
+
+        /* --- QTI 2.1 EXPORT UTILITY FOR LMS (BRIGHTSPACE) --- */
+        function downloadQTI() {
+            // Generates a standard IMS QTI XML structure containing the 10 exam questions configured for direct Brightspace import.
+            const qtiXml = `<?xml version="1.0" encoding="UTF-8"?>
+<questestinterop xmlns="http://www.imsglobal.org/xsd/ims_qtiasiv1p2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/ims_qtiasiv1p2 ims_qtiasiv1p2_v1p2.xsd">
+  <assessment ident="mla_9th_edition_assessment_college" title="MLA Style and Citations Exam (9th Edition)">
+    <section ident="section_1" title="Section I: Multiple Choice">
+      
+      <!-- QUESTION 1 -->
+      <item ident="q1" title="MLA Core Elements Order">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield>
+              <fieldlabel>question_type</fieldlabel>
+              <fieldentry>Multiple Choice</fieldentry>
+            </qtimetadatafield>
+            <qtimetadatafield>
+              <fieldlabel>points_possible</fieldlabel>
+              <fieldentry>5</fieldentry>
+            </qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Which of the following correct sequences represents the first four core elements of an MLA 9th edition Works Cited entry?</mattext>
+          </material>
+          <response_lid ident="response_q1" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material><mattext texttype="text/plain">Title of source, Author, Title of container, Version.</mattext></material>
+              </response_label>
+              <response_label ident="B">
+                <material><mattext texttype="text/plain">Author. Title of source. Title of container, Contributor,</mattext></material>
+              </response_label>
+              <response_label ident="C">
+                <material><mattext texttype="text/plain">Author. Title of container, Title of source, Publisher,</mattext></material>
+              </response_label>
+              <response_label ident="D">
+                <material><mattext texttype="text/plain">Title of source, Contributor, Publisher, Publication date.</mattext></material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar/></outcomes>
+          <respcondition>
+            <conditionvar><varequal respident="response_q1">B</varequal></conditionvar>
+            <setvar action="Set" varname="score">5</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 2 -->
+      <item ident="q2" title="MLA Concept of Container">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield><fieldlabel>question_type</fieldlabel><fieldentry>Multiple Choice</fieldentry></qtimetadatafield>
+            <qtimetadatafield><fieldlabel>points_possible</fieldlabel><fieldentry>5</fieldentry></qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">In MLA Style, what is a "container"?</mattext>
+          </material>
+          <response_lid ident="response_q2" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material><mattext texttype="text/plain">The storage folder used by university librarians for archived physical documents.</mattext></material>
+              </response_label>
+              <response_label ident="B">
+                <material><mattext texttype="text/plain">The larger work (e.g., a journal, website, or database) in which a specific source is nested.</mattext></material>
+              </response_label>
+              <response_label ident="C">
+                <material><mattext texttype="text/plain">A physical binder or digital portfolio that collects student drafts before grading.</mattext></material>
+              </response_label>
+              <response_label ident="D">
+                <material><mattext texttype="text/plain">The bracketed notation system used to clarify translation details in foreign sources.</mattext></material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar/></outcomes>
+          <respcondition>
+            <conditionvar><varequal respident="response_q2">B</varequal></conditionvar>
+            <setvar action="Set" varname="score">5</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 3 -->
+      <item ident="q3" title="In-text citation structure">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield><fieldlabel>question_type</fieldlabel><fieldentry>Multiple Choice</fieldentry></qtimetadatafield>
+            <qtimetadatafield><fieldlabel>points_possible</fieldlabel><fieldentry>5</fieldentry></qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Which of the following represents the correct format for an MLA parenthetical in-text citation when the author is not mentioned in the signal phrase?</mattext>
+          </material>
+          <response_lid ident="response_q3" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material><mattext texttype="text/plain">(Wordsworth, p. 263)</mattext></material>
+              </response_label>
+              <response_label ident="B">
+                <material><mattext texttype="text/plain">(Wordsworth 263)</mattext></material>
+              </response_label>
+              <response_label ident="C">
+                <material><mattext texttype="text/plain">(Wordsworth, 263)</mattext></material>
+              </response_label>
+              <response_label ident="D">
+                <material><mattext texttype="text/plain">(Wordsworth, pg. 263)</mattext></material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar/></outcomes>
+          <respcondition>
+            <conditionvar><varequal respident="response_q3">B</varequal></conditionvar>
+            <setvar action="Set" varname="score">5</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 4 -->
+      <item ident="q4" title="Works Cited Layout">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield><fieldlabel>question_type</fieldlabel><fieldentry>Multiple Choice</fieldentry></qtimetadatafield>
+            <qtimetadatafield><fieldlabel>points_possible</fieldlabel><fieldentry>5</fieldentry></qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">How should the Works Cited page be formatted according to standard MLA guidelines?</mattext>
+          </material>
+          <response_lid ident="response_q4" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material><mattext texttype="text/plain">Single-spaced, numbered in order of citation occurrence, with a block indent layout.</mattext></material>
+              </response_label>
+              <response_label ident="B">
+                <material><mattext texttype="text/plain">Double-spaced, alphabetized by the author's last name, using a hanging indent of 0.5 inches.</mattext></material>
+              </response_label>
+              <response_label ident="C">
+                <material><mattext texttype="text/plain">Double-spaced, organized chronologically by year, using standard paragraphs.</mattext></material>
+              </response_label>
+              <response_label ident="D">
+                <material><mattext texttype="text/plain">Alphabetized by source medium, single-spaced with a 1-inch indent.</mattext></material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar/></outcomes>
+          <respcondition>
+            <conditionvar><varequal respident="response_q4">B</varequal></conditionvar>
+            <setvar action="Set" varname="score">5</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 5 -->
+      <item ident="q5" title="Multiple Authors Citation">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield><fieldlabel>question_type</fieldlabel><fieldentry>Multiple Choice</fieldentry></qtimetadatafield>
+            <qtimetadatafield><fieldlabel>points_possible</fieldlabel><fieldentry>5</fieldentry></qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">How should you format an in-text parenthetical citation for a source that has three or more authors?</mattext>
+          </material>
+          <response_lid ident="response_q5" rcardinality="Single">
+            <render_choice>
+              <response_label ident="A">
+                <material><mattext texttype="text/plain">(Smith, Jones, and Miller 45)</mattext></material>
+              </response_label>
+              <response_label ident="B">
+                <material><mattext texttype="text/plain">(Smith et al. 45)</mattext></material>
+              </response_label>
+              <response_label ident="C">
+                <material><mattext texttype="text/plain">(Smith and others, 45)</mattext></material>
+              </response_label>
+              <response_label ident="D">
+                <material><mattext texttype="text/plain">(Smith &amp; Co. 45)</mattext></material>
+              </response_label>
+            </render_choice>
+          </response_lid>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar/></outcomes>
+          <respcondition>
+            <conditionvar><varequal respident="response_q5">B</varequal></conditionvar>
+            <setvar action="Set" varname="score">5</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 6: Fill-in-the-Blank MLA List Title -->
+      <item ident="q8" title="Bibliography Page Title">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield><fieldlabel>question_type</fieldlabel><fieldentry>Fill in the Blank</fieldentry></qtimetadatafield>
+            <qtimetadatafield><fieldlabel>points_possible</fieldlabel><fieldentry>10</fieldentry></qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/plain">In MLA style, the bibliography list page located at the end of the academic paper is exactly titled:</mattext>
+          </material>
+          <response_str ident="response_q8" rcardinality="Single">
+            <render_fib>
+              <response_label ident="FIB1"/>
+            </render_fib>
+          </response_str>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar/></outcomes>
+          <respcondition>
+            <conditionvar>
+              <or>
+                <varequal respident="response_q8">Works Cited</varequal>
+                <varequal respident="response_q8">works cited</varequal>
+              </or>
+            </conditionvar>
+            <setvar action="Set" varname="score">10</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 7: Fill-in-the-Blank Paragraph Abbreviation -->
+      <item ident="q9" title="Paragraph Citation Abbreviation">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield><fieldlabel>question_type</fieldlabel><fieldentry>Fill in the Blank</fieldentry></qtimetadatafield>
+            <qtimetadatafield><fieldlabel>points_possible</fieldlabel><fieldentry>10</fieldentry></qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/plain">Write the exact three-letter MLA abbreviation used in parenthetical citations to refer to a specific paragraph (including trailing period):</mattext>
+          </material>
+          <response_str ident="response_q9" rcardinality="Single">
+            <render_fib>
+              <response_label ident="FIB2"/>
+            </render_fib>
+          </response_str>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar/></outcomes>
+          <respcondition>
+            <conditionvar>
+              <or>
+                <varequal respident="response_q9">par.</varequal>
+                <varequal respident="response_q9">par</varequal>
+              </or>
+            </conditionvar>
+            <setvar action="Set" varname="score">10</setvar>
+          </respcondition>
+        </resprocessing>
+      </item>
+
+      <!-- QUESTION 8: Essay Question -->
+      <item ident="q10" title="Nested Containers Essay">
+        <itemmetadata>
+          <qtimetadata>
+            <qtimetadatafield><fieldlabel>question_type</fieldlabel><fieldentry>Essay</fieldentry></qtimetadatafield>
+            <qtimetadatafield><fieldlabel>points_possible</fieldlabel><fieldentry>30</fieldentry></qtimetadatafield>
+          </qtimetadata>
+        </itemmetadata>
+        <presentation>
+          <material>
+            <mattext texttype="text/html">Explain the foundational concept of nested containers in MLA 9th edition. Describe how an item such as a digitized journal article can require a two-container template structure. Include details about transitional punctuation.</mattext>
+          </material>
+          <response_str ident="response_q10" rcardinality="Single">
+            <render_fib/>
+          </response_str>
+        </presentation>
+        <resprocessing>
+          <outcomes><decvar/></outcomes>
+          <!-- Evaluated manually by Brightspace instructor -->
+        </resprocessing>
+      </item>
+
+    </section>
+  </assessment>
+</questestinterop>`;
+
+            // Create Blob and download direct XML in browser
+            const blob = new Blob([qtiXml], { type: 'text/xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'MLA_9th_Edition_Exam_Brightspace_QTI.xml';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
