@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive AI Prompt Generator for Educators</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind Config for Dark Mode -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#4f46e5',
+                            dark: '#6366f1',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Lucide Icons for clean UI -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen transition-colors duration-300">
+
+    <!-- Header / Navigation -->
+    <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-indigo-600 rounded-xl text-white">
+                    <i data-lucide="sparkles" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-tight">EduPrompt Studio</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Interactive Prompt Generator for Lesson Designers</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- Preset Selector Button -->
+                <button onclick="loadPreset()" class="hidden md:flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 transition-all">
+                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                    Load UNC Study Smarter Preset
+                </button>
+
+                <!-- Light/Dark Mode Switcher -->
+                <button id="themeToggle" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all text-slate-600 dark:text-slate-300" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Mobile Preset Button -->
+        <div class="md:hidden mb-4">
+            <button onclick="loadPreset()" class="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg border border-indigo-200 dark:border-indigo-800 text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 transition-all">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                Load UNC Study Smarter Preset
+            </button>
+        </div>
+
+        <!-- Notification Toast -->
+        <div id="toast" class="fixed bottom-6 right-6 transform translate-y-20 opacity-0 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-5 py-3 rounded-xl shadow-xl flex items-center gap-3 transition-all duration-300 z-50">
+            <div class="p-1 bg-green-500 text-white rounded-full">
+                <i data-lucide="check" class="w-4 h-4"></i>
+            </div>
+            <span class="text-sm font-medium" id="toastMessage">Copied prompt to clipboard!</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Side Controls (5 Columns) -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <!-- Lesson Core Meta -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/60 dark:border-slate-800/80 space-y-4">
+                    <div class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <i data-lucide="settings" class="w-5 h-5 text-indigo-500"></i>
+                        <h2 class="font-bold text-base">1. Basic Configurations</h2>
+                    </div>
+
+                    <!-- Platform Dropdown -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">AI Platform Target</label>
+                        <select id="aiPlatform" class="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                            <option value="gemini">Google Gemini (Optimized for context & markdown)</option>
+                            <option value="chatgpt">ChatGPT (Optimized for structured prompts)</option>
+                            <option value="claude">Anthropic Claude (XML structured styling)</option>
+                        </select>
+                    </div>
+
+                    <!-- Lesson Title Textbox -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Lesson Title</label>
+                        <input type="text" id="lessonTitle" value="Study Smarter, Not Harder" placeholder="e.g., Intro to Photosynthesis" class="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                    </div>
+
+                    <!-- Lesson Subject / Target Group -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Lesson Subject / Target Audience</label>
+                        <input type="text" id="lessonSubject" value="Academic Study Skills & Metacognition" placeholder="e.g., 9th Grade Biology" class="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">
+                    </div>
+                </div>
+
+                <!-- Prompt Component Dropdowns -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/60 dark:border-slate-800/80 space-y-5">
+                    <div class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <i data-lucide="sliders" class="w-5 h-5 text-indigo-500"></i>
+                        <h2 class="font-bold text-base">2. Section Settings & Styles</h2>
+                    </div>
+
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Configure how the AI generator should treat each pedagogical section of the prompt output:</p>
+
+                    <div class="grid grid-cols-1 gap-4">
+                        
+                        <!-- Learning Objectives Dropdown -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="text-xs font-bold text-slate-700 dark:text-slate-300">Learning Objectives</span>
+                            </div>
+                            <select id="optObjectives" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="bloom">Include: Bloom's Taxonomy aligned</option>
+                                <option value="simple">Include: Simple checklist layout</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                        <!-- Key Terms Dropdown -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Key Terms</span>
+                            <select id="optTerms" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="table">Include: Table with term & student-friendly definition</option>
+                                <option value="bullet">Include: Bulleted list with definitions</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                        <!-- Key Concepts Dropdown -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Key Concepts</span>
+                            <select id="optConcepts" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="deep">Include: In-depth conceptual breakdowns</option>
+                                <option value="executive">Include: Quick executive summaries</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                        <!-- Pre-Test Dropdown -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Pre-Test / Prior Knowledge Check</span>
+                            <select id="optPretest" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="diagnostic">Include: 3 Diagnostic schema-activation questions</option>
+                                <option value="survey">Include: Reflective self-assessment scale</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                        <!-- Core Content Dropdown -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Core Content Presentation</span>
+                            <select id="optContent" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="scaffolded">Include: Highly scaffolded modules with interactive micro-breaks</option>
+                                <option value="conversational">Include: Narrative, conversational study guidebook text</option>
+                                <option value="outline">Include: Comprehensive outline structures with key details</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                        <!-- Analogies & Real-World Examples Dropdown -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Analogies & Real-World Examples</span>
+                            <select id="optAnalogies" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="comparisons">Include: 2 vivid metaphors and 1 practical application scenario</option>
+                                <option value="case-study">Include: Short relatable case study</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                        <!-- Summary Dropdown -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Summary Section</span>
+                            <select id="optSummary" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="tldr">Include: "TL;DR" executive takeaway list</option>
+                                <option value="mindmap-concept">Include: Textual mindmap roadmap framework</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                        <!-- Review Quiz Dropdown -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Review Quiz</span>
+                            <select id="optQuiz" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="mcq">Include: 5 Multiple-choice questions with detailed feedback keys</option>
+                                <option value="retrieval">Include: Active recall retrieval prompts + reasoning questions</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                        <!-- ADA Checklist Dropdown -->
+                        <div>
+                            <span class="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-1.5">Accessibility (ADA) Check</span>
+                            <select id="optAda" class="w-full rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="checklist">Include: Quality Assurance checklist (Alt-text, screen reader guide)</option>
+                                <option value="universal">Include: Universal Design for Learning (UDL) implementation tips</option>
+                                <option value="none">Do Not Include</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Reference Materials Context -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-sm border border-slate-200/60 dark:border-slate-800/80 space-y-4">
+                    <div class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <i data-lucide="file-text" class="w-5 h-5 text-indigo-500"></i>
+                        <h2 class="font-bold text-base">3. Source Material Context</h2>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Paste your primary article, notes, or research here. The generated prompt will instruct the AI to build the lesson strictly based on this content.</p>
+                    <textarea id="sourceMaterial" rows="6" class="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-3 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all code-font" placeholder="Paste study guide text or reference books context here..."></textarea>
+                </div>
+
+            </div>
+
+            <!-- Right Side Preview & Prompt Output (7 Columns) -->
+            <div class="lg:col-span-7 space-y-6 lg:sticky lg:top-24">
+                
+                <!-- Prompt Editor Card -->
+                <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col min-h-[600px]">
+                    
+                    <!-- Card Header -->
+                    <div class="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="flex h-3 w-3 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                            </span>
+                            <h2 class="font-bold text-sm tracking-wide">LIVE PROMPT PREVIEW</h2>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <!-- Copy Button -->
+                            <button onclick="copyPrompt()" class="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl text-xs shadow-md transition-all">
+                                <i data-lucide="copy" class="w-4 h-4"></i>
+                                Copy Prompt
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Prompt Text Area Panel -->
+                    <div class="flex-1 p-6 relative">
+                        <textarea id="promptOutput" class="w-full h-[520px] bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 p-4 text-sm focus:outline-none code-font resize-none" readonly></textarea>
+                    </div>
+
+                    <!-- Footer Details -->
+                    <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/30 dark:bg-slate-900/30 text-xs text-slate-500 dark:text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-3">
+                        <span id="wordCount">Prompt Word Count: 0</span>
+                        <span class="flex items-center gap-1.5">
+                            <i data-lucide="info" class="w-4 h-4 text-indigo-500"></i>
+                            Paste this prompt directly into your chosen AI system!
+                        </span>
+                    </div>
+
+                </div>
+
+                <!-- Custom Tips or Quick Instructions -->
+                <div class="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 dark:from-indigo-950/20 dark:to-purple-950/20 rounded-2xl p-5 border border-indigo-100 dark:border-indigo-900/60 space-y-3">
+                    <h4 class="font-bold text-sm flex items-center gap-1.5 text-indigo-700 dark:text-indigo-400">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> Pro Tips for Educators
+                    </h4>
+                    <ul class="text-xs space-y-2 text-slate-600 dark:text-slate-400 list-disc list-inside">
+                        <li><strong>Gemini optimization:</strong> Provides high context length support. Excellent if you are pasting full-length curriculum chapters.</li>
+                        <li><strong>Claude customization:</strong> Uses exact XML boundary blocks (`&lt;source_text&gt;`) which decreases hallucination errors significantly.</li>
+                        <li><strong>Lightweight updates:</strong> Change options in real-time. The text in the Live Prompt Preview panel adjusts dynamically.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- App JavaScript -->
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Preset Content from UNC Study Guide Text
+        const uncPresetText = `Do you ever feel like your study habits simply aren’t cutting it? Many students realize that their high school study habits aren’t very effective in college. 
+        
+Active Studying Techniques:
+1. Create a study guide by topic. Formulate questions and problems and write complete answers.
+2. Become a teacher. Say the information aloud in your own words as if you are the instructor.
+3. Derive examples that relate to your own experiences.
+4. Create concept maps or diagrams that explain the material.
+5. Study in terms of Question, Evidence, and Conclusion.
+
+The Study Cycle (Frank Christ):
+- Previewing
+- Attending class
+- Reviewing
+- Studying
+- Checking your understanding
+
+Distributed Practice: Spacing out your studying over several short periods of time over several days and weeks is far more effective than marathon cramming sessions. It helps store details into long-term memory.
+
+Study Environment: Multitasking reduces study performance. Find optimal spaces, control distractions, turn off social media, and utilize small pockets of downtime.`;
+
+        // Theme Toggle Functionality
+        const themeToggleBtn = document.getElementById('themeToggle');
+        themeToggleBtn.addEventListener('click', () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // Setup Event Listeners for Live Updates
+        const controls = [
+            'aiPlatform', 'lessonTitle', 'lessonSubject', 'sourceMaterial',
+            'optObjectives', 'optTerms', 'optConcepts', 'optPretest',
+            'optContent', 'optAnalogies', 'optSummary', 'optQuiz', 'optAda'
+        ];
+
+        controls.forEach(controlId => {
+            const el = document.getElementById(controlId);
+            if (el) {
+                el.addEventListener('input', generatePromptText);
+                el.addEventListener('change', generatePromptText);
+            }
+        });
+
+        // Load Preset Data
+        function loadPreset() {
+            document.getElementById('lessonTitle').value = "Studying 101: Study Smarter, Not Harder";
+            document.getElementById('lessonSubject').value = "College Preparation & Metacognitive Study Skills";
+            document.getElementById('sourceMaterial').value = uncPresetText;
+            
+            // Adjust dropdowns for a complete showcase
+            document.getElementById('optObjectives').value = "bloom";
+            document.getElementById('optTerms').value = "table";
+            document.getElementById('optConcepts').value = "deep";
+            document.getElementById('optPretest').value = "diagnostic";
+            document.getElementById('optContent').value = "scaffolded";
+            document.getElementById('optAnalogies').value = "comparisons";
+            document.getElementById('optSummary').value = "tldr";
+            document.getElementById('optQuiz').value = "retrieval";
+            document.getElementById('optAda').value = "checklist";
+
+            generatePromptText();
+            showToast("UNC 'Study Smarter' preset loaded successfully!");
+        }
+
+        // Custom Toast Notification System (Replaces browser alert)
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3000);
+        }
+
+        // Copy Clipboard logic with document.execCommand fallback
+        function copyPrompt() {
+            const textarea = document.getElementById('promptOutput');
+            textarea.select();
+            textarea.setSelectionRange(0, 99999); // For mobile devices
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("Prompt copied to clipboard!");
+                } else {
+                    showToast("Failed to copy automatically.");
+                }
+            } catch (err) {
+                showToast("Error occurred during copying process.");
+            }
+        }
+
+        // Dynamic Generator Core Logic
+        function generatePromptText() {
+            const platform = document.getElementById('aiPlatform').value;
+            const title = document.getElementById('lessonTitle').value || "[Enter Lesson Title]";
+            const subject = document.getElementById('lessonSubject').value || "[Enter Subject]";
+            const sourceText = document.getElementById('sourceMaterial').value.trim();
+
+            const objectivesVal = document.getElementById('optObjectives').value;
+            const termsVal = document.getElementById('optTerms').value;
+            const conceptsVal = document.getElementById('optConcepts').value;
+            const pretestVal = document.getElementById('optPretest').value;
+            const contentVal = document.getElementById('optContent').value;
+            const analogiesVal = document.getElementById('optAnalogies').value;
+            const summaryVal = document.getElementById('optSummary').value;
+            const quizVal = document.getElementById('optQuiz').value;
+            const adaVal = document.getElementById('optAda').value;
+
+            let prompt = "";
+
+            // System Instructions & AI Platform Framing
+            if (platform === 'claude') {
+                prompt += `You are an elite, instructional designer and expert academic educator. Your task is to generate a comprehensive, structured lesson artifact based on the provided reference material.\n\n`;
+                prompt += `<lesson_metadata>\n`;
+                prompt += `  <title>${title}</title>\n`;
+                prompt += `  <subject_audience>${subject}</subject_audience>\n`;
+                prompt += `</lesson_metadata>\n\n`;
+            } else if (platform === 'gemini') {
+                prompt += `**Role:** Elite Instructional Systems Designer & Pedagogical Specialist\n`;
+                prompt += `**Task:** Construct a highly engaging, structured, and easy-to-follow lesson framework.\n`;
+                prompt += `**Lesson Topic:** ${title}\n`;
+                prompt += `**Target Subject/Audience:** ${subject}\n\n`;
+                prompt += `---\n\n`;
+            } else { // chatgpt / default
+                prompt += `Act as an expert instructional designer. Create a highly professional lesson plan and resource kit.\n`;
+                prompt += `Lesson Title: "${title}"\n`;
+                prompt += `Subject & Target Level: ${subject}\n\n`;
+            }
+
+            // Introduction directive
+            prompt += `Please compile the lesson using a structured Markdown layout, ensuring deep pedagogical quality. Include the following sections exactly configured as specified below:\n\n`;
+
+            // Adding Sections Based on dropdown configs
+            
+            // 1. Objectives
+            if (objectivesVal === 'bloom') {
+                prompt += `1. **LEARNING OBJECTIVES**\n   - Formulate clear learning objectives mapped directly to Bloom's Taxonomy (remembering, understanding, applying, analyzing, evaluating, creating) that target the primary topics in the source material.\n\n`;
+            } else if (objectivesVal === 'simple') {
+                prompt += `1. **LEARNING OBJECTIVES**\n   - List 3-4 simple, actionable, and clear student objectives stating what they will master after reviewing this lesson.\n\n`;
+            }
+
+            // 2. Key Terms
+            if (termsVal === 'table') {
+                prompt += `2. **KEY TERMS & VOCABULARY**\n   - Present critical terms from the lesson within a Markdown table structure. Include columns for: [Vocabulary Term] | [Clear Definition] | [Contextual Example].\n\n`;
+            } else if (termsVal === 'bullet') {
+                prompt += `2. **KEY TERMS & VOCABULARY**\n   - List key vocabulary definitions as bullet points with bold term names, followed by simple, easy-to-read explanations.\n\n`;
+            }
+
+            // 3. Key Concepts
+            if (conceptsVal === 'deep') {
+                prompt += `3. **CORE EDUCATIONAL CONCEPTS**\n   - Provide an in-depth analytical breakdown of the underlying principles or core theories presented in this lesson, explaining *why* they work.\n\n`;
+            } else if (conceptsVal === 'executive') {
+                prompt += `3. **CORE EDUCATIONAL CONCEPTS**\n   - Provide brief, clear, executive summary statements highlighting the main conceptual pillars of the lesson.\n\n`;
+            }
+
+            // 4. Pre-Test
+            if (pretestVal === 'diagnostic') {
+                prompt += `4. **PRE-TEST & DIAGNOSTIC SCHEMA CHECK**\n   - Include 3 schema-activation pre-test questions designed to test baseline assumptions and check prior understanding before diving deep into the content.\n\n`;
+            } else if (pretestVal === 'survey') {
+                prompt += `4. **REFLECTIVE PRIOR-KNOWLEDGE CHECK**\n   - Include a short self-assessment scale (1-5 ratings on key concepts) with prompt questions to help learners check their comfort level before reading.\n\n`;
+            }
+
+            // 5. Content
+            if (contentVal === 'scaffolded') {
+                prompt += `5. **CORE CONTENT EXPLANATION**\n   - Develop the learning content systematically. Scaffold the information in bite-sized modules. Embed small 'Self-Reflection Mini-Breaks' or 'Checkpoints' to maintain cognitive stamina.\n\n`;
+            } else if (contentVal === 'conversational') {
+                prompt += `5. **CORE CONTENT EXPLANATION**\n   - Tell a continuous story. Explain the core content using a highly narrative, warm, conversational guidebook style that reads like a mentor explaining concepts directly to the student.\n\n`;
+            } else if (contentVal === 'outline') {
+                prompt += `5. **CORE CONTENT EXPLANATION**\n   - Provide a comprehensive, formal hierarchical outline (using nested bullet lists) that represents all core parts of the materials in maximum clarity.\n\n`;
+            }
+
+            // 6. Analogies & Real-World Examples
+            if (analogiesVal === 'comparisons') {
+                prompt += `6. **METAPHORS, ANALOGIES & PRACTICAL SCENARIOS**\n   - Formulate 2 creative metaphors/analogies to simplify complex ideas, and describe 1 practical real-world scenario demonstrating the immediate application of this lesson.\n\n`;
+            } else if (analogiesVal === 'case-study') {
+                prompt += `6. **RELATABLE CASE STUDY**\n   - Write a short, engaging fictional or non-fictional case study of a student or professional applying these ideas to solve a real, practical challenge.\n\n`;
+            }
+
+            // 7. Summary
+            if (summaryVal === 'tldr') {
+                prompt += `7. **TL;DR EXECUTIVE LESSON SUMMARY**\n   - Provide a concise summary of the lesson's major take-aways using an actionable "TL;DR" (Too Long; Didn't Read) key bullet list.\n\n`;
+            } else if (summaryVal === 'mindmap-concept') {
+                prompt += `7. **TEXTUAL CONCEPT MAP ROADMAP**\n   - Build a beautiful textual conceptual mindmap using ASCII characters or high-level markdown structures detailing the relationships between elements of the lesson.\n\n`;
+            }
+
+            // 8. Review Quiz
+            if (quizVal === 'mcq') {
+                prompt += `8. **COMPREHENSIVE REVIEW QUIZ**\n   - Generate exactly 5 Multiple-Choice Questions (MCQs) to test knowledge retention. Provide detailed, explanatory solutions underneath a toggle spoiler block, explaining why correct answers are correct and other choices are distractors.\n\n`;
+            } else if (quizVal === 'retrieval') {
+                prompt += `8. **ACTIVE RETRIEVAL CHALLENGE**\n   - Create 3 short-answer active recall prompts that force deep processing, accompanied by a checklist of criteria to construct the ideal logical response.\n\n`;
+            }
+
+            // 9. ADA Accessibility Checklist
+            if (adaVal === 'checklist') {
+                prompt += `9. **ADA & ACCESSIBILITY COMPLIANCE GUIDE**\n   - Provide a checklist ensuring this lesson is digitally accessible. This must include placeholder alt-text recommendations for all suggested visuals, clean semantic heading structures, and explicit suggestions for screen readers.\n\n`;
+            } else if (adaVal === 'universal') {
+                prompt += `9. **UNIVERSAL DESIGN FOR LEARNING (UDL) STRATEGIES**\n   - Outline how teachers can offer multiple means of Representation, Engagement, and Action/Expression when presenting this exact lesson.\n\n`;
+            }
+
+            // Injecting Source Material
+            if (sourceText) {
+                if (platform === 'claude') {
+                    prompt += `Use the exact reference materials enclosed below within the <source_text> XML tags to build the entire contents of this lesson. Do not hallucinate or use external unrelated facts:\n\n`;
+                    prompt += `<source_text>\n${sourceText}\n</source_text>\n\n`;
+                } else {
+                    prompt += `**REFERENCE / SOURCE MATERIAL TO BASE THE LESSON ON:**\n`;
+                    prompt += `Use the reference details specified below to generate the custom content. Base your definitions, ideas, and structure on this information:\n`;
+                    prompt += `====================================\n`;
+                    prompt += `${sourceText}\n`;
+                    prompt += `====================================\n\n`;
+                }
+            } else {
+                prompt += `[No source reference material provided. Generate the lesson based on standard authoritative scholarly knowledge regarding "${title} (${subject})".]\n\n`;
+            }
+
+            // Output Directives
+            prompt += `Tone: Professional, highly encouraging, and supportive. Ensure perfect Markdown formatting throughout. Do not summarize sections unless requested -- present the complete finished lesson text directly.`;
+
+            // Update text area
+            document.getElementById('promptOutput').value = prompt;
+
+            // Update Word count
+            const words = prompt.trim().split(/\s+/).filter(Boolean).length;
+            document.getElementById('wordCount').innerText = `Prompt Word Count: ${words}`;
+        }
+
+        // Run on Startup
+        window.onload = function() {
+            // Load preset on startup as baseline
+            loadPreset();
+        }
+    </script>
+</body>
+</html>
