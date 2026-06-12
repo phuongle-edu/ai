@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community College Writing Center - AI Lesson Prompt Generator</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Smooth transition effects */
+        .transition-all {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- Header / Brand Banner -->
+    <header class="bg-gradient-to-r from-brand-900 via-brand-800 to-indigo-900 text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-3">
+                    <!-- Graduation Cap & Pen SVG -->
+                    <svg class="h-10 w-10 text-blue-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6"></path>
+                    </svg>
+                    <div>
+                        <h1 class="text-2xl font-bold tracking-tight">AI Lesson Plan Prompt Generator</h1>
+                        <p class="text-xs sm:text-sm text-blue-200">Community College Writing Center • Pedagogy & Design Tool</p>
+                    </div>
+                </div>
+                <div class="text-right flex flex-col sm:flex-row items-center gap-3">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-brand-800 shadow-sm border border-blue-200">
+                        Writing Specialist Mode Active
+                    </span>
+                    <button onclick="downloadIndexHTML()" type="button" class="inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-lg transition-all shadow-sm border border-emerald-500 cursor-pointer">
+                        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        Download index.html
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        
+        <!-- Quick Specialist Introduction -->
+        <div class="mb-8 bg-white border-l-4 border-brand-600 rounded-r-lg shadow-sm p-5">
+            <div class="flex gap-4">
+                <div class="flex-shrink-0">
+                    <span class="inline-flex items-center justify-center h-12 w-12 rounded-full bg-brand-100 text-brand-700 text-lg font-bold">💡</span>
+                </div>
+                <div>
+                    <h2 class="text-base font-semibold text-brand-900">A Note from the Writing Center</h2>
+                    <p class="mt-1 text-sm text-slate-600 leading-relaxed">
+                        Welcome, colleague! As community college instructors, we design for incredibly diverse student bodies—from working adults and first-generation scholars to dual-credit high schoolers. Use this tool to structure highly adaptive, pedagogically sound, and ADA-compliant prompts. Feed the output directly into ChatGPT, Claude, Gemini, or any LLM to generate high-quality lesson plans tailored to our unique mission.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Presets Bar -->
+        <div class="mb-6">
+            <div class="bg-slate-100 rounded-xl p-4 border border-slate-200 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm font-semibold text-slate-700">Need inspiration? Choose a preset template:</span>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" onclick="loadPreset('composition')" class="px-3 py-1.5 bg-white hover:bg-brand-50 border border-slate-300 hover:border-brand-300 rounded-lg text-xs font-medium text-slate-700 hover:text-brand-700 transition-all shadow-sm">
+                        📝 Rhetorical Analysis (English)
+                    </button>
+                    <button type="button" onclick="loadPreset('chemistry')" class="px-3 py-1.5 bg-white hover:bg-brand-50 border border-slate-300 hover:border-brand-300 rounded-lg text-xs font-medium text-slate-700 hover:text-brand-700 transition-all shadow-sm">
+                        🔬 Chemical Reactions Lab (STEM)
+                    </button>
+                    <button type="button" onclick="loadPreset('alliedhealth')" class="px-3 py-1.5 bg-white hover:bg-brand-50 border border-slate-300 hover:border-brand-300 rounded-lg text-xs font-medium text-slate-700 hover:text-brand-700 transition-all shadow-sm">
+                        🏥 Patient Case Study (Allied Health)
+                    </button>
+                    <button type="button" onclick="clearForm()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg text-xs font-medium text-red-700 transition-all">
+                        Reset All
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Form & Preview Split Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Side: Customizer Inputs (7 columns) -->
+            <form id="promptForm" onsubmit="return false;" class="lg:col-span-7 space-y-6 bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                
+                <h3 class="text-lg font-bold text-slate-900 border-b pb-3 flex items-center gap-2">
+                    <svg class="h-5 w-5 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
+                    Step 1: Build Your Lesson Parameters
+                </h3>
+
+                <!-- 1. Lesson Title & AI Optimizations -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="lessonTitle" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Lesson Title</label>
+                        <input type="text" id="lessonTitle" oninput="generatePrompt()" placeholder="e.g., Intro to Rhetorical Appeals" class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm">
+                    </div>
+                    <div>
+                        <label for="aiTarget" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Optimize Prompt For</label>
+                        <select id="aiTarget" onchange="generatePrompt()" class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm">
+                            <option value="general">Universal AI (Optimized for all models)</option>
+                            <option value="chatgpt">ChatGPT (Instructional Design focus)</option>
+                            <option value="claude">Claude (Pedagogical depth & scaffolding)</option>
+                            <option value="gemini">Gemini (Real-world search & application)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 2. Target Audience -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="audience" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Target Audience</label>
+                        <span class="text-xs text-brand-600 italic font-medium">Writing Center Tip: Be specific about background knowledge.</span>
+                    </div>
+                    <select id="audience" onchange="generatePrompt()" class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm mb-2">
+                        <option value="General Community College students with diverse preparation levels">General Community College Students (Diverse prep)</option>
+                        <option value="Developmental / Co-requisite students who need scaffolded support">Developmental & Support Pathways (Scaffolded)</option>
+                        <option value="First-Year Experience (FYE) students building foundational college skills">First-Year Composition / Intro Level</option>
+                        <option value="Non-traditional, adult learners balancing jobs and family commitments">Non-traditional & Adult Learners</option>
+                        <option value="Dual-Enrollment high school students seeking early college credit">Dual-Enrollment / Early College High School</option>
+                        <option value="Career & Technical Education (CTE) students focusing on workplace applications">CTE / Applied Technology Pathways</option>
+                    </select>
+                    <input type="text" id="customAudience" oninput="generatePrompt()" placeholder="Or type custom audience details..." class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm">
+                </div>
+
+                <!-- 3. Learning Objectives -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="objectives" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Learning Objectives</label>
+                        <span class="text-xs text-brand-600 font-medium">Use Bloom's taxonomy verbs!</span>
+                    </div>
+                    <textarea id="objectives" rows="3" oninput="generatePrompt()" placeholder="By the end of this lesson, students will be able to:&#10;1. Identify ethos, pathos, and logos in print ads.&#10;2. Evaluate the ethics of emotional appeals." class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm"></textarea>
+                </div>
+
+                <!-- 4. Topics Covered & Key Terms (Grid) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="topics" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Topics Covered</label>
+                        <textarea id="topics" rows="3" oninput="generatePrompt()" placeholder="e.g., Rhetorical situation, identifying logical fallacies, audience alignment" class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm"></textarea>
+                    </div>
+                    <div>
+                        <label for="keyTerms" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">Key Terms</label>
+                        <textarea id="keyTerms" rows="3" oninput="generatePrompt()" placeholder="e.g., Rhetoric, Ethos, Pathos, Logos, Kairos, Target Audience" class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm"></textarea>
+                    </div>
+                </div>
+
+                <!-- 5. Types of Activities Selection -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">Activity Frameworks to Emphasize</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <label class="flex items-start p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-brand-50 hover:border-brand-200 transition-all">
+                            <input type="checkbox" id="actInteractive" onchange="generatePrompt()" checked class="mt-0.5 h-4 w-4 text-brand-600 border-slate-300 rounded focus:ring-brand-500">
+                            <div class="ml-3">
+                                <span class="block text-sm font-semibold text-slate-900">Interactive Learning Activities</span>
+                                <span class="block text-xs text-slate-500">Polls, think-pair-share, muddiest-point check-ins.</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-brand-50 hover:border-brand-200 transition-all">
+                            <input type="checkbox" id="actTeam" onchange="generatePrompt()" class="mt-0.5 h-4 w-4 text-brand-600 border-slate-300 rounded focus:ring-brand-500">
+                            <div class="ml-3">
+                                <span class="block text-sm font-semibold text-slate-900">Collaborative Team Projects</span>
+                                <span class="block text-xs text-slate-500">Low-stakes group analyses, peer-review stations.</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-brand-50 hover:border-brand-200 transition-all">
+                            <input type="checkbox" id="actCase" onchange="generatePrompt()" class="mt-0.5 h-4 w-4 text-brand-600 border-slate-300 rounded focus:ring-brand-500">
+                            <div class="ml-3">
+                                <span class="block text-sm font-semibold text-slate-900">Realistic Case Studies</span>
+                                <span class="block text-xs text-slate-500">Real-world scenarios with local relevance.</span>
+                            </div>
+                        </label>
+                        <label class="flex items-start p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:bg-brand-50 hover:border-brand-200 transition-all">
+                            <input type="checkbox" id="actLab" onchange="generatePrompt()" class="mt-0.5 h-4 w-4 text-brand-600 border-slate-300 rounded focus:ring-brand-500">
+                            <div class="ml-3">
+                                <span class="block text-sm font-semibold text-slate-900">Guided / Exploratory Labs</span>
+                                <span class="block text-xs text-slate-500">Step-by-step experimentation, analytical drill-downs.</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 6. ADA Compliance & Universal Design (UDL) -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="adaOptions" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">ADA Compliance & Accessibility Focus</label>
+                        <span class="text-xs text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-medium">Crucial for equity</span>
+                    </div>
+                    <select id="adaOptions" onchange="generatePrompt()" class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm">
+                        <option value="robust">Robust (Full UDL - Alt text recommendations, closed-caption triggers, screen reader friendliness, and scaffolded alternative reading materials)</option>
+                        <option value="standard">Standard (Basic alt-text suggestions, accessible document layout warnings, and high-contrast visuals hints)</option>
+                        <option value="neurodivergent">Neurodivergence Focus (Structured chunking, minimizing cognitive overload, offering multiple pathways for performance)</option>
+                    </select>
+                </div>
+
+                <!-- 7. Analogies & Real-World Examples -->
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="analogies" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Analogies & Real-World Examples</label>
+                        <span class="text-xs text-brand-600 font-medium">Connects theory to life</span>
+                    </div>
+                    <textarea id="analogies" rows="2" oninput="generatePrompt()" placeholder="e.g., Comparing rhetorical analysis to dissecting a viral TikTok trend, or examining political campaign ads that students see on social media daily." class="w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600 text-sm"></textarea>
+                </div>
+
+            </form>
+
+            <!-- Right Side: Prompt Output & Copier (5 columns) -->
+            <div class="lg:col-span-5 flex flex-col space-y-4">
+                
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex-grow flex flex-col">
+                    
+                    <!-- Output Header -->
+                    <div class="bg-slate-50 border-b border-slate-200 p-4 flex flex-wrap items-center justify-between gap-2">
+                        <h3 class="text-sm font-bold text-slate-950 flex items-center gap-1.5">
+                            <span class="flex h-2.5 w-2.5 relative">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-600"></span>
+                            </span>
+                            Step 2: Copy Live Prompt Preview
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <button onclick="downloadPromptText()" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold text-xs rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-slate-400 shadow-sm cursor-pointer">
+                                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Download (.txt)
+                            </button>
+                            <button onclick="copyGeneratedPrompt()" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-brand-500 shadow-sm cursor-pointer">
+                                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                                </svg>
+                                Copy Prompt
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Dynamic Output Textarea -->
+                    <div class="flex-grow p-4 bg-slate-950 text-slate-100 font-mono text-xs leading-relaxed select-all whitespace-pre-wrap overflow-y-auto max-h-[500px] lg:max-h-[600px] outline-none" id="promptText" tabindex="0">
+                        <!-- Prompt will be auto-generated here -->
+                    </div>
+                </div>
+
+                <!-- Toast Notification Box -->
+                <div id="toast" class="hidden transform translate-y-2 opacity-0 transition-all duration-300 bg-slate-900 text-white text-xs py-3 px-4 rounded-lg shadow-lg flex items-center justify-between gap-3 border border-slate-700">
+                    <span id="toastMsg" class="font-medium flex items-center gap-1.5">
+                        <span class="text-green-400">✔</span> Copied successfully! Paste into your AI tool.
+                    </span>
+                    <button onclick="dismissToast()" class="text-slate-400 hover:text-white font-bold">✕</button>
+                </div>
+
+                <!-- Side Guide Panel / Pedagogy Tips -->
+                <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-5">
+                    <h4 class="text-sm font-bold text-indigo-950 flex items-center gap-1.5 mb-2">
+                        <span>🎓</span> Pedagogical Alignment
+                    </h4>
+                    <p class="text-xs text-indigo-900 leading-relaxed">
+                        This template leverages the <strong>Instructional Scaffolding Paradigm</strong>. When the AI models process this structured prompt, they generate lessons with explicit formative assessments, warm-ups tailored to real-life competencies, and a clear path toward the required standards.
+                    </p>
+                    <div class="mt-3 border-t border-indigo-200 pt-3 flex flex-col gap-2 text-[11px] text-indigo-800">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-emerald-600">✔</span> <strong>Direct Alignment:</strong> Verbs match assessments directly.
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-emerald-600">✔</span> <strong>Equity First:</strong> ADA compliance ensures diverse user learning access.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500">
+            <p>© 2026 Community College Writing Center. Generated lessons follow UDL Guidelines and institutional curriculum standard best practices.</p>
+            <p class="mt-1">For customized writing consultations or pedagogical reviews, reach out to your local writing center specialist team.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Preset Data Object
+        const presets = {
+            composition: {
+                title: "Introduction to Rhetorical Analysis & Logical Appeals",
+                audience: "First-Year Experience (FYE) students building foundational college skills",
+                objectives: "1. Define and distinguish between Ethos, Pathos, and Logos in public discourse.\n2. Analyze a popular advertisements to identify how logical appeals persuade target audiences.\n3. Draft a short thesis statement evaluating the effectiveness of a chosen appeal.",
+                topics: "The rhetorical situation, identifying ethos/pathos/logos, analyzing corporate advertising campaigns, formulating rhetorical claims.",
+                keyTerms: "Rhetoric, Ethos, Pathos, Logos, Rhetor, Kairos, Logical Fallacy, Target Audience, Scaffolding.",
+                interactive: true,
+                team: true,
+                case: false,
+                lab: false,
+                ada: "robust",
+                analogies: "Using corporate advertisements on social media (like TikTok sponsored posts) to show how 'influencers' establish ethos, how brands evoke fear/humor (pathos), and how statistics are presented to sound authoritative (logos)."
+            },
+            chemistry: {
+                title: "Fundamentals of Chemical Reactions & Stoichiometry",
+                audience: "General Community College students with diverse preparation levels",
+                objectives: "1. Balance chemical reaction formulas with precise coefficient calculations.\n2. Distinguish synthesis, decomposition, and single-displacement reactions visually and mathematically.\n3. Apply stoichiometric principles to determine the limiting reactant in a hypothetical lab reaction.",
+                topics: "Reactants and products, law of conservation of mass, molecular ratios, stoichiometry formulas.",
+                keyTerms: "Stoichiometry, Limiting Reactant, Excess Reactant, Coefficient, Mole Ratio, Catalyst, Endothermic, Exothermic.",
+                interactive: false,
+                team: false,
+                case: false,
+                lab: true,
+                ada: "standard",
+                analogies: "Thinking about baking recipes: if you have plenty of flour but only 2 eggs, you can't bake the full batch. The eggs are your limiting reactant. We convert grams of molecules to moles just like converting boxes of ingredients to individual pieces."
+            },
+            alliedhealth: {
+                title: "SBAR Communication Protocols in Emergency Care",
+                audience: "Career & Technical Education (CTE) students focusing on workplace applications",
+                objectives: "1. Identify the structural components of the SBAR (Situation, Background, Assessment, Recommendation) framework.\n2. Translate unstructured patient medical records into structured verbal handoffs.\n3. Collaborate with team members to resolve high-stress miscommunication clinical cases safely.",
+                topics: "Interprofessional communications, standardized care metrics, emergency room patient triage, SBAR clinical deployment.",
+                keyTerms: "SBAR, Verbal Hand-off, Triage Protocol, Clinical Escalation, Interdisciplinary Care, HIPAA, Diagnostic Integrity.",
+                interactive: true,
+                team: true,
+                case: true,
+                lab: false,
+                ada: "neurodivergent",
+                analogies: "Using the structured outline of a military 9-line report, or comparing a messy handoff to a broken game of telephone where crucial patient health details get lost."
+            }
+        };
+
+        // Form Inputs Elements Cache
+        const elements = {
+            title: document.getElementById('lessonTitle'),
+            audience: document.getElementById('audience'),
+            customAudience: document.getElementById('customAudience'),
+            objectives: document.getElementById('objectives'),
+            topics: document.getElementById('topics'),
+            keyTerms: document.getElementById('keyTerms'),
+            actInteractive: document.getElementById('actInteractive'),
+            actTeam: document.getElementById('actTeam'),
+            actCase: document.getElementById('actCase'),
+            actLab: document.getElementById('actLab'),
+            ada: document.getElementById('adaOptions'),
+            analogies: document.getElementById('analogies'),
+            aiTarget: document.getElementById('aiTarget'),
+            promptText: document.getElementById('promptText')
+        };
+
+        // Function to load a preset template
+        function loadPreset(key) {
+            const data = presets[key];
+            if (!data) return;
+
+            elements.title.value = data.title;
+            elements.audience.value = data.audience;
+            elements.customAudience.value = "";
+            elements.objectives.value = data.objectives;
+            elements.topics.value = data.topics;
+            elements.keyTerms.value = data.keyTerms;
+            elements.actInteractive.checked = data.interactive;
+            elements.actTeam.checked = data.team;
+            elements.actCase.checked = data.case;
+            elements.actLab.checked = data.lab;
+            elements.ada.value = data.ada;
+            elements.analogies.value = data.analogies;
+
+            generatePrompt();
+            showToast(`Loaded ${key.toUpperCase()} lesson template preset!`);
+        }
+
+        // Function to clear form
+        function clearForm() {
+            elements.title.value = "";
+            elements.audience.selectedIndex = 0;
+            elements.customAudience.value = "";
+            elements.objectives.value = "";
+            elements.topics.value = "";
+            elements.keyTerms.value = "";
+            elements.actInteractive.checked = true;
+            elements.actTeam.checked = false;
+            elements.actCase.checked = false;
+            elements.actLab.checked = false;
+            elements.ada.value = "robust";
+            elements.analogies.value = "";
+            
+            generatePrompt();
+            showToast("Form fields reset to default.");
+        }
+
+        // Generate Prompt Text based on Inputs
+        function generatePrompt() {
+            const titleVal = elements.title.value.trim() || "[Insert Lesson Title]";
+            const targetVal = elements.aiTarget.value;
+            
+            // Audience resolution
+            let audienceVal = elements.audience.value;
+            if (elements.customAudience.value.trim() !== "") {
+                audienceVal = `${elements.audience.value} - specifically emphasizing: ${elements.customAudience.value.trim()}`;
+            }
+
+            const objectivesVal = elements.objectives.value.trim() || "[Insert Learning Objectives here to focus performance standards]";
+            const topicsVal = elements.topics.value.trim() || "[List major thematic scopes or topics here]";
+            const keyTermsVal = elements.keyTerms.value.trim() || "[List essential terminology and concepts]";
+            
+            // Gathering checked activities
+            let activitiesArray = [];
+            if (elements.actInteractive.checked) activitiesArray.push("Interactive Learning Activities (muddiest point, think-pair-share, active live polling)");
+            if (elements.actTeam.checked) activitiesArray.push("Collaborative Team Projects (interpersonal communication, structured peer feedback, shared problem-solving)");
+            if (elements.actCase.checked) activitiesArray.push("Realistic Case Studies (analyzing authentic scenarios with direct local or community relevance)");
+            if (elements.actLab.checked) activitiesArray.push("Guided / Exploratory Labs (systematic testing, concrete hands-on lab or computer work)");
+            
+            const selectedActivities = activitiesArray.length > 0 
+                ? activitiesArray.join("\n- ") 
+                : "Standard direct instruction framework supplemented by student questions.";
+
+            // Accessibility translation
+            const adaMap = {
+                robust: "Strict adherence to complete Universal Design for Learning (UDL). Recommend structural headings, concrete alternative text tags for visuals, suggested transcripts for audio materials, clear scaffolded worksheets, and non-visual/auditory means of active classroom engagement.",
+                standard: "Include suggestions for clear document visual formatting, standard high-contrast accessible color coding suggestions, basic alternative text prompts, and clean typography layouts.",
+                neurodivergent: "Provide an explicitly chunked agenda. Break complex topics down into highly organized blocks. Provide structured worksheets to manage student cognitive overload, use highly predictable activities, and suggest diverse modes of visual/text performance options."
+            };
+            const adaVal = adaMap[elements.ada.value] || adaMap.robust;
+
+            const analogiesVal = elements.analogies.value.trim() || "[Insert a relevant real-world metaphor or analogy connecting key ideas to daily life]";
+
+            // Custom target instructions
+            let optimizationPrefix = "";
+            if (targetVal === "chatgpt") {
+                optimizationPrefix = `[Instructional Designer Focus: Optimize for systematic step-by-step instructions. Act as an expert pedagogical consultant.]\n\n`;
+            } else if (targetVal === "claude") {
+                optimizationPrefix = `[Analytical Scaffolding Focus: Emphasize nuanced transitions, structural pacing, and cognitive alignment.]\n\n`;
+            } else if (targetVal === "gemini") {
+                optimizationPrefix = `[Real-World Integration Focus: Incorporate highly current applications, external tools, and experiential learning strategies.]\n\n`;
+            }
+
+            // Construct final prompt string
+            const prompt = `${optimizationPrefix}Act as an expert curriculum designer and pedagogy specialist with a deep background in community college instruction, scaffolded learning pathways, and modern classroom engagement. 
+
+Generate a comprehensive, ready-to-teach, highly interactive lesson plan customized to our college's open-access mission:
+
+### 1. LESSON OVERVIEW
+* **Lesson Title:** ${titleVal}
+* **Target Audience:** ${audienceVal}
+* **Key Concept / Theme:** We want this design to bridge high-school-to-college gaps while offering appropriate academic rigor for adult learners.
+
+### 2. INTENDED LEARNING STANDARDS
+* **Objectives:** ${objectivesVal.split('\n').map(line => `    ${line}`).join('\n')}
+* **Core Topics covered:** ${topicsVal}
+* **Essential Vocabulary/Key Terms:** ${keyTermsVal}
+
+### 3. CURRICULUM SCENE & PEDAGOGY
+* **Core Analogies or Metaphors:** Use the following analogy strategy to make this concept relatable: "${analogiesVal}"
+* **Primary Active Frameworks:** Integrate these student-facing active methodologies:
+    - ${selectedActivities}
+
+### 4. INCLUSIVE DESIGN & ACCESSIBILITY (ADA & UDL)
+* **UDL Action Steps:** ${adaVal}
+* Please embed actionable visual/audio placeholders (with prompt tags to build compliant alternative text) directly within all classroom materials.
+
+### 5. REQUESTED LESSON STRUCTURE & DELIVERABLES
+Generate a beautifully formatted lesson agenda with timestamps. It must include:
+1.  **Preparation Checklists:** Materials, technology, and advance student tasks.
+2.  **The 'Hook' (5-10 mins):** An opening classroom story, question, or demonstration centered on the analogy above to draw diverse students in immediately.
+3.  **Direct Scaffolding Instruction (15-20 mins):** Breaking down the key concepts into digestible steps, incorporating 2 quick check-for-understanding verbal questions with answer guides.
+4.  **Active Engagement Period (25-30 mins):** Specific, step-by-step directions detailing how the requested activities will operate in class. Detail student roles, group setups, and guiding questions.
+5.  **Formative Assessment & Exit Strategy:** A 3-minute closure exercise designed to test student achievement of the learning objectives before they leave.
+6.  **Alternative Accommodation Guidelines:** Tips for adapting this lesson for remote/asynchronous options, visual impairments, or physical limitations.`;
+
+            elements.promptText.textContent = prompt;
+        }
+
+        // Copy Clipboard via standard robust iFrame-compatible protocol
+        function copyGeneratedPrompt() {
+            const textToCopy = elements.promptText.textContent;
+            
+            // Fallback strategy for iframe environments (document.execCommand)
+            const textArea = document.createElement("textarea");
+            textArea.value = textToCopy;
+            textArea.style.position = "fixed";  // Avoid scrolling down
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("Prompt copied successfully! Paste it into your AI platform.");
+                } else {
+                    showToast("Copy failed. Please manually select the preview block text to copy.", true);
+                }
+            } catch (err) {
+                showToast("Copy failed. Please manually select the preview block text to copy.", true);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Download the current generator tool as index.html
+        function downloadIndexHTML() {
+            // Re-serialize the full source HTML
+            const docType = "<!DOCTYPE html>\n";
+            const htmlContent = docType + document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: "text/html" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "index.html";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast("Successfully exported and downloaded 'index.html'!");
+        }
+
+        // Download generated prompt as a text file
+        function downloadPromptText() {
+            const textContent = elements.promptText.textContent;
+            const blob = new Blob([textContent], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "lesson_prompt.txt";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast("Successfully downloaded 'lesson_prompt.txt'!");
+        }
+
+        // Toast Notifications Handler
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            
+            toastMsg.innerHTML = isError 
+                ? `<span class="text-red-400">✖</span> ${message}`
+                : `<span class="text-green-400">✔</span> ${message}`;
+
+            toast.classList.remove('hidden', 'translate-y-2', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            // Autohide after 4 seconds
+            setTimeout(() => {
+                dismissToast();
+            }, 4000);
+        }
+
+        function dismissToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.add('translate-y-2', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 300);
+        }
+
+        // Initialize Form with default state or a specific preset
+        window.onload = function() {
+            loadPreset('composition');
+        }
+    </script>
+</body>
+</html>
